@@ -3,11 +3,11 @@ Spy = {}
 function Spy:new(x, y)
 	o = {}
 	setmetatable(o, {__index = self})
-	
+
 	o.position = vector.new(x, y)
 	o.size = vector.new(32, 48)
 	o.velocity = vector.new(0, 0)
-	
+
 	--[[
 	possible state values:
 	-ground
@@ -15,9 +15,9 @@ function Spy:new(x, y)
 	]]
 	o.state = "air"
 	o.collider = HC.rectangle(x, y, o.size.x, o.size.y)
-	
+
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
-	
+
 	return o
 end
 
@@ -27,7 +27,7 @@ function Spy:update(dt)
 end
 
 function Spy:changeState(dt)
-	
+
 end
 
 function Spy:runState(dt)
