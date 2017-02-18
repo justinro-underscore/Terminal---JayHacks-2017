@@ -17,17 +17,30 @@ hackerFont = love.graphics.setNewFont("cour.ttf", 20)
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
-	
+
+  --sets up global reference for all objects
+
+  gamepadList = {}
+  hackerList = {}
+  spyList = {}
+  wallList = {}
+
+  updateableLists = {gamepadList, hackerList, spyList}
+  drawableLists = {hackerList, spyList, wallList}
+
+  local joysticks = love.joystick.getJoysticks()
+	table.insert(gamepadList, Gamepad:new(joysticks[1]))
+
 	gameTime = 0
   state = GameState:new()
-  
+
   love.keyboard.setKeyRepeat(true)
   --hacker = Hacker:new()
 end
 
 function love.update(dt)
   gameTime = gameTime + dt
-  
+
   state:changeState(stateName)
 	state:updateState(dt)
 
