@@ -21,10 +21,18 @@ function GameState:changeState(state) -- Handle state changes
 			self.currentState = self.titleMenu
 			self.currentState:loadState()
 		end
-	
+
 	elseif self.stateName == "titleMenu" then
-		
+
 	end
+end
+
+function GameState:keyInput(key)
+  self.currentState:key(key)
+end
+
+function GameState:textInput(text)
+  self.currentState:text(text)
 end
 
 function GameState:updateState(dt) -- calls the update method of whatever the current state is
