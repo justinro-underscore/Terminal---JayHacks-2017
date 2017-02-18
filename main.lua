@@ -1,18 +1,36 @@
-require "Hacker"
+HC =  require 'HC'
+vector = require 'hump.vector'
+
+require 'GameState'
+require 'GameStates/SplashScreen'
+require 'GameStates/TitleMenu'
+require 'GameStates/Level01'
+
+require 'Gamepad'
+require 'Hacker'
+require 'Spy'
+require 'Wall'
+--require 'Door'
+
+hackerFont = love.graphics.setNewFont("cour.ttf", 20)
 
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
-
 	love.window.setFullscreen(false)
 
   love.keyboard.setKeyRepeat(true)
+
   gameTime = 0
   hacker = Hacker:new()
 end
 
 function love.update(dt)
   gameTime = gameTime + dt
-  hacker:update(dt)
+
+  state:changeState(stateName)
+	state:updateState(dt)
+
+  --hacker:update(dt)
 end
 
 function love.keypressed(key)
@@ -26,10 +44,11 @@ function love.keypressed(key)
   end
 end
 
-function love.textinput(text)
-  hacker:input(text)
-end
+--[[function love.textinput(text)
+	hacker:input(text)
+end]]
 
 function love.draw()
-  hacker:draw()
+  state:draw()
+  --hacker:draw()
 end
