@@ -17,6 +17,8 @@ function Spy:new(x, y, controller)
 	]]
 	o.state = "air"
 	
+	o.mode = "none"
+	
 	o.hitGround = false -- will be set to true by the collision function, used by changestate
 	
 	o.collider = HC.rectangle(x, y, o.size.x, o.size.y)
