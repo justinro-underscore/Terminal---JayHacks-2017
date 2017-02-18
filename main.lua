@@ -10,6 +10,7 @@ require 'Gamepad'
 require 'Hacker'
 require 'Spy'
 require 'Wall'
+require 'Trap'
 --require 'Door'
 
 hackerFont = love.graphics.setNewFont("cour.ttf", 20)
@@ -17,17 +18,17 @@ hackerFont = love.graphics.setNewFont("cour.ttf", 20)
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
-	
+
 	gameTime = 0
   state = GameState:new()
-  
+  --Trap =Trap:new(23,34)
   love.keyboard.setKeyRepeat(true)
   --hacker = Hacker:new()
 end
 
 function love.update(dt)
   gameTime = gameTime + dt
-  
+
   state:changeState(stateName)
 	state:updateState(dt)
 
@@ -51,5 +52,6 @@ end]]
 
 function love.draw()
   state:draw()
+  Trap:draw()
   --hacker:draw()
 end
