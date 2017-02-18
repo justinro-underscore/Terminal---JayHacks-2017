@@ -12,9 +12,9 @@ function GameState:new()
   return o
 end
 
-function GameState:changeState(state)
+function GameState:changeState(state) -- Handle state changes
 	if self.stateName == "splashScreen" then
-		if gameTime >= 2 then
+		if gameTime >= 2 then -- switch off the splash screen after 2 seconds
 			self.stateName = "titleMenu"
 			self.currentState = self.titleMenu
 			self.currentState:loadState()
@@ -25,10 +25,10 @@ function GameState:changeState(state)
 	end
 end
 
-function GameState:updateState(dt)
+function GameState:updateState(dt) -- calls the update method of whatever the current state is
   self.currentState:updateState(dt)
 end
 
-function GameState:draw()
+function GameState:draw() -- calls the draw method of whatever the current state is
   self.currentState:drawState()
 end
