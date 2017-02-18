@@ -8,12 +8,11 @@ require 'GameStates/Level01'
 
 require 'Gamepad'
 require 'Hacker'
-require 'HackerCommands'
 require 'Spy'
 require 'Wall'
 --require 'Door'
 
-hackerFont = love.graphics.setNewFont("cour.ttf", 13)
+hackerFont = love.graphics.setNewFont("cour.ttf", 20)
 
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
@@ -36,6 +35,7 @@ function love.load()
   state = GameState:new()
 
   love.keyboard.setKeyRepeat(true)
+  --hacker = Hacker:new()
 end
 
 function love.update(dt)
@@ -43,6 +43,8 @@ function love.update(dt)
 
   state:changeState(stateName)
 	state:updateState(dt)
+
+  --hacker:update(dt)
 end
 
 function love.keypressed(key)
@@ -50,16 +52,17 @@ function love.keypressed(key)
 		love.event.quit()
 	end
   if key == "backspace" then
-    state:keyInput(key)
+    hacker:keyInput(key)
   elseif key == "return" then
-    state:keyInput(key)
+    hacker:keyInput(key)
   end
 end
 
-function love.textinput(text)
-	state:textInput(text)
-end
+--[[function love.textinput(text)
+	hacker:input(text)
+end]]
 
 function love.draw()
   state:draw()
+  --hacker:draw()
 end
