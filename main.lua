@@ -19,10 +19,23 @@ function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
 
-  love.keyboard.setKeyRepeat(true)
+  --sets up global reference for all objects
 
-  gameTime = 0
+  gamepadList = {}
+  hackerList = {}
+  spyList = {}
+  wallList = {}
+
+  updateableLists = {gamepadList, hackerList, spyList}
+  drawableLists = {hackerList, spyList, wallList}
+
+  local joysticks = love.joystick.getJoysticks()
+	table.insert(gamepadList, Gamepad:new(joysticks[1]))
+
+	gameTime = 0
   state = GameState:new()
+
+  love.keyboard.setKeyRepeat(true)
 end
 
 function love.update(dt)

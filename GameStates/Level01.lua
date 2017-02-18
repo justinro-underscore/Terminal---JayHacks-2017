@@ -7,13 +7,10 @@ function Level01:new()
 end
 
 function Level01:loadState()
-	local joysticks = love.joystick.getJoysticks()
-	self.control = Gamepad:new(joysticks[1])
+	table.insert(spyList, Spy:new(200, 200, gamepadList[1])) -- new spy with the first gamepad
 
-	self.player = Spy:new(200, 200, self.control)
-	self.wallList = {}
-	for i = 100, 500, 32 do
-		table.insert(self.wallList, Wall:new(i, 500))
+	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
+		table.insert(wallList, Wall:new(i, 500))
 	end
 
   self.hacker = Hacker:new()
@@ -40,4 +37,16 @@ function Level01:drawState()
 		v:draw()
 	end]]
   self.hacker:draw()
+  
+	for _, v in ipairs(updateableLists) do
+    for __, vv in ipairs(v) do
+      vv:update(dt)
+    end
+  end
+  
+  for _, v in ipairs(drawableLists) do
+    for __, vv in ipairs(v) do
+      vv:draw(dt)
+    end
+  end
 end
