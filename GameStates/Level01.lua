@@ -17,6 +17,7 @@ function Level01:loadState()
 	end
 
   self.hacker = Hacker:new()
+  self.hacker:setSpy(self.player)
 end
 
 function Level01:updateState(dt)
@@ -25,10 +26,18 @@ function Level01:updateState(dt)
   self.hacker:update(dt)
 end
 
+function Level01:key(key)
+  self.hacker:keyInput(key)
+end
+
+function Level01:text(text)
+  self.hacker:input(text)
+end
+
 function Level01:drawState()
-	self.player:draw()
+	--[[self.player:draw()
   for i, v in ipairs(self.wallList) do
 		v:draw()
-	end
+	end]]
   self.hacker:draw()
 end
