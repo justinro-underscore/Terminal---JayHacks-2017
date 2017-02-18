@@ -15,11 +15,14 @@ function Level01:loadState()
 	for i = 100, 500, 32 do
 		table.insert(self.wallList, Wall:new(i, 500))
 	end
+
+  self.hacker = Hacker:new()
 end
 
 function Level01:updateState(dt)
 	self.control:update(dt)
 	self.player:update(dt)
+  self.hacker:update(dt)
 end
 
 function Level01:drawState()
@@ -27,4 +30,5 @@ function Level01:drawState()
   for i, v in ipairs(self.wallList) do
 		v:draw()
 	end
+  self.hacker:draw()
 end

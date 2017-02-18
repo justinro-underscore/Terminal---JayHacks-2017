@@ -21,7 +21,6 @@ function love.load()
   love.keyboard.setKeyRepeat(true)
 
   gameTime = 0
-  hacker = Hacker:new()
 end
 
 function love.update(dt)
@@ -29,8 +28,6 @@ function love.update(dt)
 
   state:changeState(stateName)
 	state:updateState(dt)
-
-  --hacker:update(dt)
 end
 
 function love.keypressed(key)
@@ -50,5 +47,4 @@ end]]
 
 function love.draw()
   state:draw()
-  --hacker:draw()
 end

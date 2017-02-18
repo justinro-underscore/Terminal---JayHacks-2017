@@ -1,3 +1,9 @@
+--[[
+Hacker commands:
+
+- 
+]]
+
 Hacker = {}
 
 -- Creates the new object
@@ -76,4 +82,5 @@ function Hacker:draw()
     fade = fade - 32
     love.graphics.setColor(254,215,0,fade)
   end
+
 end
