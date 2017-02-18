@@ -1,3 +1,13 @@
+--[[
+Hacker commands:
+
+- change (mode)
+  - OR mode (mode)
+ Changes the current mode spy is in
+
+-
+]]
+
 HackerCommands = {}
 
 function HackerCommands:new(spy)

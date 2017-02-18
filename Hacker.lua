@@ -1,13 +1,3 @@
---[[
-Hacker commands:
-
-- change (mode)
-  - OR mode (mode)
- Changes the current mode spy is in
-
--
-]]
-
 Hacker = {}
 
 -- Creates the new object
