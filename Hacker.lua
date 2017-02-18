@@ -25,6 +25,13 @@ function Hacker:update(dt)
   else
     self.time = 0; -- Reset time
   end
+
+  if table.getn(self.inputted) > 8 then -- Makes sure the command screen doesn't get past 8 commands shown at a time
+    for i = 2, table.getn(self.inputted),1 do
+      self.inputted[i-1] = self.inputted[i] -- Move all variables down
+    end
+    self.inputted[table.getn(self.inputted)] = nil
+  end
 end
 
 -- Get the input
@@ -61,9 +68,12 @@ function Hacker:draw()
   love.graphics.print("> " .. self.currentInput .. self.blink, 10, love.graphics.getHeight()-30) -- Prints the command line
 
   local yVal = love.graphics.getHeight() - 60 -- Spaces inbetween previous inputs
+  local fade = 255 -- Fades the text into the background
   local numLength = (table.getn(self.inputted)) -- Length of previous input list
   for i = numLength, 1, -1 do -- Goes through the list backwards
     love.graphics.print("> " .. self.inputted[i], 10, yVal)
     yVal = yVal - 30
+    fade = fade - 32
+    love.graphics.setColor(254,215,0,fade)
   end
 end
