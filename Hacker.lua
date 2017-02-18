@@ -76,4 +76,6 @@ function Hacker:draw()
     fade = fade - 32
     love.graphics.setColor(254,215,0,fade)
   end
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.rectangle("fill", 0, love.graphics.getHeight() / 3 * 2, love.graphics.getWidth(), 2)
 end
