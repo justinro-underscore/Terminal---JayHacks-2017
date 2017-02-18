@@ -5,6 +5,7 @@ function love.load()
 
 	love.window.setFullscreen(false)
 
+  love.keyboard.setKeyRepeat(true)
   gameTime = 0
   hacker = Hacker:new()
 end
