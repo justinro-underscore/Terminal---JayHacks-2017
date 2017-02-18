@@ -1,7 +1,7 @@
 TitleMenu = {}
 
 function TitleMenu:new()
-  o = {}
+  local o = {}
   setmetatable(o, {__index = self})
   return o
 end

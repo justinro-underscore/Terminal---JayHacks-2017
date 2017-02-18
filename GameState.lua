@@ -1,10 +1,7 @@
-require "GameStates/SplashScreen"
-require "GameStates/TitleMenu"
-
 GameState = {}
 
 function GameState:new()
-  o = {}
+  local o = {}
   setmetatable(o, {__index = self})
 
   o.currentState = nil

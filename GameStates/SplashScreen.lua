@@ -1,7 +1,7 @@
 SplashScreen = {}
 
 function SplashScreen:new()
-  o = {}
+  local o = {}
   setmetatable(o, {__index = self})
   return o
 end

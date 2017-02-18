@@ -1,4 +1,7 @@
-require "GameState"
+require 'GameState'
+require 'GameStates/SplashScreen'
+require 'GameStates/TitleMenu'
+
 
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
@@ -8,7 +11,7 @@ function love.load()
   gameTime = 0
   stateName = ""
   state = GameState:new()
-  --state:changeState(stateName)
+  state:changeState(stateName)
 end
 
 function love.update(dt)
@@ -18,7 +21,7 @@ function love.update(dt)
   else
     stateName = "titleScreen"
   end
---  state:changeState(stateName)
+  state:changeState(stateName)
 end
 
 function love.keypressed(key)
@@ -28,6 +31,6 @@ function love.keypressed(key)
 end
 
 function love.draw()
-  --state:draw()
+  state:draw()
   love.graphics.print(state.test)
 end
