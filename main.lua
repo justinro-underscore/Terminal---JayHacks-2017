@@ -6,7 +6,9 @@ require 'Spy'
 require 'GameState'
 require 'GameStates/SplashScreen'
 require 'GameStates/TitleMenu'
-require "Hacker"
+require 'Hacker'
+
+hackerFont = love.graphics.setNewFont("cour.ttf", 20)
 
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")

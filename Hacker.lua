@@ -57,7 +57,7 @@ end
 -- Draw the stuff
 function Hacker:draw()
   love.graphics.setColor(254, 215, 0)
-  love.graphics.setNewFont("cour.ttf", 20) -- Sets font to Courier New
+	love.graphics.setFont(hackerFont)
   love.graphics.print("> " .. self.currentInput .. self.blink, 10, love.graphics.getHeight()-30) -- Prints the command line
 
   local yVal = love.graphics.getHeight() - 60 -- Spaces inbetween previous inputs
