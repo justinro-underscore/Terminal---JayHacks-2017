@@ -33,8 +33,10 @@ function HackerCommands:changeMode(mode)
     self.output = "Modes available: {'acrobatic','defense'}"
   elseif mode == "acrobatic" then
     self.output = "Mode changed to 'acrobatic'"
+    spyList[1]:setMode(mode)
   elseif mode == "defense" then
     self.output = "Mode changed to 'defense'"
+    spyList[1]:setMode(mode)
   else
     self.output = "ERROR: Mode '" .. mode .. "' not recognized"
   end
