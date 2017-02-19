@@ -36,6 +36,5 @@ end
 
 function Turret:draw()
 	love.graphics.setColor(255, 255, 0, 255)
-  love.graphics.print(self.time)
   love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
 end

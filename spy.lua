@@ -67,6 +67,7 @@ function Spy:update(dt)
 	self.collider:moveTo(self.position.x, self.position.y)
 
 	if self.isKill then
+		debug.debug()
 		self:delete()
 	end
 end
@@ -326,5 +327,6 @@ function Spy:draw()
 end
 
 function Spy:delete()
+	debug.debug()
   HC.remove(self.collider)
 end
