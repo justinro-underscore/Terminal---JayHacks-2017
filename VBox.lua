@@ -30,7 +30,7 @@ function VBox:toggle()
     result = self.name .. " has been turned to the OFF state"
   else
     self.activated = true
-    self.activated = "VBoxOn"
+    self.tag = "VBoxOn"
     result = self.name .. " has been turned to the ON state"
   end
   return result
