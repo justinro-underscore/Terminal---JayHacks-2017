@@ -22,6 +22,9 @@ function Level01:loadState()
   table.insert(doorList, Door:new(300, 202,"door_1"))
   terminalList[2]:addInfluence(doorList[1])
 
+  table.insert(turretList, Turret:new(200, 100, "left"))
+  table.insert(turretList, Turret:new(150, 150, "right"))
+
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 300))
 	end
@@ -86,5 +89,13 @@ function Level01:clearState()
 
   for k in pairs(trapList) do
     trapList[k] = nil
+  end
+
+  for k in pairs(turretList) do
+    turretList[k] = nil
+  end
+
+  for k in pairs(bulletList) do
+    bulletList[k] = nil
   end
 end

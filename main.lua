@@ -11,10 +11,12 @@ require 'Hacker'
 require 'HackerCommands'
 require 'Spy'
 require 'Wall'
+require 'Trap'
 require 'Terminal'
 require 'VBox'
 require 'Door'
-require 'Trap'
+require 'Bullet'
+require 'Turret'
 
 objectFont = love.graphics.setNewFont("cour.ttf", 7)
 hackerFont = love.graphics.setNewFont("cour.ttf", 13)
@@ -24,7 +26,6 @@ function love.load()
 	love.window.setFullscreen(false)
 
   --sets up global reference for all objects
-
   gamepadList = {}
   hackerList = {}
   spyList = {}
@@ -33,9 +34,11 @@ function love.load()
   vboxList = {}
   doorList = {}
   trapList = {}
+  bulletList = {}
+  turretList = {}
 
-  updateableLists = {gamepadList, hackerList, spyList}
-  drawableLists = {vboxList, terminalList, spyList, wallList, trapList, doorList, hackerList}
+  updateableLists = {gamepadList, turretList, bulletList, hackerList, spyList}
+  drawableLists = {hackerList, terminalList, bulletList, vboxList, doorList, turretList, spyList, wallList, trapList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))
