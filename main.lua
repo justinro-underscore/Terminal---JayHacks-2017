@@ -11,13 +11,31 @@ require 'Hacker'
 require 'Spy'
 require 'Wall'
 require 'Trap'
+require 'dirt'
 --require 'Door'
 
 hackerFont = love.graphics.setNewFont("cour.ttf", 20)
-
+dirt = love.graphics.newImage("Light Skin Dirt Bitches.png")
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
+  background = love.graphics.newCanvas() -- create a background canvas to draw all background stars (default size is the screen dimensions
+	love.graphics.setCanvas(background)
+  local w, h = love.window.getMode()
+  local numdirt= w*h
+  local dirt = {}
+  local j=1
+	for i = 1, numdirt do
+		table.insert(dirt, dirt:new(j,i))
+    j=j+1
+	end
+
+	for i, v in ipairs(dirt) do
+		v:draw()
+	end
+    love.graphics.setCanvas()
+
+
 
 	gameTime = 0
   state = GameState:new()
@@ -52,6 +70,7 @@ end]]
 
 function love.draw()
   state:draw()
-  Trap:draw()
+  --Spy:draw()
+  --Trap:draw()
   --hacker:draw()
 end
