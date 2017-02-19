@@ -39,7 +39,7 @@ end
 
 function VBox:draw()
   if self.activated then
-    love.graphics.setColor(125, 125, 125)
+    love.graphics.setColor(125, 125, 125, 255)
   else
     love.graphics.setColor(125, 125, 125, 100)
   end
