@@ -152,7 +152,7 @@ function Spy:changeState(dt)
 		if self.hitGround then
 			self.hitGround = false
 			self.state = "run"
-			self.velocity.x, self.velocity.y = 0, 0
+			self.velocity.y = 0
 		end
 	end
 end
