@@ -13,16 +13,17 @@ function Level01:loadState()
   table.insert(vboxList, VBox:new(600, 200, true,"vbox_1"))
   table.insert(vboxList, VBox:new(700, 200, false,"vbox_2"))
 
-  table.insert(terminalList, Terminal:new(300, 452, "terminal_1", false, "poop"))
+  table.insert(terminalList, Terminal:new(350, 252, "terminal_1", false, "poop"))
   terminalList[1]:addInfo("Did you know that Alex is a poser?")
-  table.insert(terminalList, Terminal:new(150, 452, "terminal_2", true, ""))
+  table.insert(terminalList, Terminal:new(150, 252, "terminal_2", true, ""))
   terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
   terminalList[2]:addInfluence(vboxList[1])
   terminalList[2]:addInfluence(vboxList[2])
-  table.insert(doorList, Door:new(500, 202))
+  table.insert(doorList, Door:new(300, 202,"door_1"))
+  terminalList[2]:addInfluence(doorList[1])
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
-		table.insert(wallList, Wall:new(i, 500))
+		table.insert(wallList, Wall:new(i, 300))
 	end
   for i = 100, 550, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(400, i))
