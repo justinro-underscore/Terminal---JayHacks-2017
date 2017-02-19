@@ -35,7 +35,7 @@ function love.load()
   trapList = {}
 
   updateableLists = {gamepadList, hackerList, spyList}
-  drawableLists = {vboxList, spyList, wallList, trapList, doorList, hackerList, terminalList}
+  drawableLists = {vboxList, terminalList, spyList, wallList, trapList, doorList, hackerList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))

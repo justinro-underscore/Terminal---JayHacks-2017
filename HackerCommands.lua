@@ -43,11 +43,6 @@ end
 
 function HackerCommands:access(object)
   self.output = ""
-  local terminal = spyList[1].terminalTouch
-  if terminal == self.currentTerminal then
-    table.insert(self.display, "Already connected to '" .. self.currentTerminal.terminalName .. "'")
-    return false
-  end
   if object == "files" or object == "file" then
     if self.currentTerminal then
       table.insert(self.display, "Accessing terminal '" .. self.currentTerminal.terminalName .. "' files...")
@@ -58,6 +53,11 @@ function HackerCommands:access(object)
       self.output = "ERROR: Not connected to a terminal"
       table.insert(self.display, self.output)
     end
+    return false
+  end
+  local terminal = spyList[1].terminalTouch
+  if terminal and terminal == self.currentTerminal then
+    table.insert(self.display, "Already connected to '" .. self.currentTerminal.terminalName .. "'")
     return false
   end
   if terminal then
@@ -92,11 +92,16 @@ function HackerCommands:password(pass)
   end
 end
 
-function HackerCommands:toggleVBox(box)
+function HackerCommands:toggle(object)
   self.output = ""
-  if box == "" then
-    self.output = "VBox's available: {"
-    local numLength = (table.getn(self.currentTerminal.influence)) --
+  if object == "" then
+    self.output = "Objects available: {"
+    local numLength = (table.getn(self.currentTerminal.influence))
+    if numLength == 0 then
+      self.output = self.output .. "}"
+      table.insert(self.display, self.output)
+      return nil
+    end
     for i = 1, (numLength - 1) do
       self.output = self.output .. "'" .. self.currentTerminal.influence[i].name .. "', "
     end
@@ -104,7 +109,7 @@ function HackerCommands:toggleVBox(box)
     table.insert(self.display, self.output)
   else
     for i, v in ipairs(self.currentTerminal.influence) do
-      if box == v.name then
+      if object == v.name then
         self.output = "Successfully toggled '" .. v.name .. "'"
         table.insert(self.display, self.output)
         local result = v:toggle()
@@ -112,7 +117,7 @@ function HackerCommands:toggleVBox(box)
         return nil
       end
     end
-    self.output = "Could not find VBox with name of '" .. box .. "'"
+    self.output = "Could not find object with name of '" .. object .. "'"
     table.insert(self.display, self.output)
   end
 end

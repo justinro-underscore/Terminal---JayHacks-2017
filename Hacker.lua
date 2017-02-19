@@ -95,7 +95,7 @@ function Hacker:runCommand(text)
       secondInput = true
     end
   elseif command == "toggle" then
-    self.commands:toggleVBox(object)
+    self.commands:toggle(object)
   elseif command == "quit" then -- Quits. (Why did I add this?)
     table.insert(self.display, "WHY WOULD YOU DO THIS")
     love.event.quit()
