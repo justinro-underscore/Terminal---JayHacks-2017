@@ -7,23 +7,32 @@ function GameState:new()
   o.splashScreen = SplashScreen:new()
   o.titleMenu = TitleMenu:new()
 	o.level01 = Level01:new()
+  o.level02 = Level02:new()
 	o.currentState = o.level01
 	o.currentState:loadState()
-	o.stateName = "level01"
 
   return o
 end
 
 function GameState:changeState(state) -- Handle state changes
-	if self.stateName == "splashScreen" then
-		if gameTime >= 2 then -- switch off the splash screen after 2 seconds
-			self.stateName = "titleMenu"
+	if self.currentState == self.splashScreen then
+		if self.currentState.isComplete then
 			self.currentState = self.titleMenu
 			self.currentState:loadState()
 		end
 
-	elseif self.stateName == "titleMenu" then
+	elseif self.currentState == self.titleMenu then
+    if self.currentState.isComplete then
+      self.currentState = self.level01
+      self.currentState:loadState()
+    end
 
+  elseif self.currentState == self.level01 then
+    if self.currentState.isComplete then
+      self.currentState:clearState()
+      self.currentState = self.level02
+      self.currentState:loadState()
+    end
 	end
 end
 
