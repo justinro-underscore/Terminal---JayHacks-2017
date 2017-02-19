@@ -40,17 +40,31 @@ function HackerCommands:changeMode(mode)
   table.insert(self.display, self.output)
 end
 
-function HackerCommands:access()
+function HackerCommands:access(object)
   self.output = ""
   local terminal = spyList[1].terminalTouch
+  if terminal == hackerList[1].currentTerminal then
+    table.insert(self.display, "Already connected to '" .. hackerList[1].currentTerminal.terminalName .. "'")
+    return false
+  end
+  if object == "files" or object == "file" then
+    if hackerList[1].currentTerminal then
+      table.insert(self.display, "Accessing terminal '" .. hackerList[1].currentTerminal.terminalName .. "' files...")
+      for i, v in ipairs(hackerList[1].currentTerminal:unlock()) do
+        table.insert(self.display, "'" .. v .. "'")
+      end
+    else
+      self.output = "ERROR: Not connected to a terminal"
+      table.insert(self.display, self.output)
+    end
+    return false
+  end
   if terminal then
     self.output = "Terminal '" .. terminal.terminalName .. "' found"
     if terminal.unlocked then
       self.output = self.output .. ". Accessing terminal..."
       table.insert(self.display, self.output)
-      for ii, vv in ipairs(terminal:unlock()) do
-        table.insert(self.display, "'" .. vv .. "'")
-      end
+      hackerList[1].currentTerminal = terminal
       return false
     else
       self.output = self.output .. ". Please input password:"
@@ -69,9 +83,8 @@ function HackerCommands:password(pass)
   if self.placeholder.terminalPassword == pass then -- Placeholder will have name of the terminal
     self.output = "Password accepted. Accessing terminal..."
     table.insert(self.display, self.output)
-    for ii, vv in ipairs(self.placeholder:unlock()) do
-      table.insert(self.display, vv)
-    end
+    self.placeholder:unlock()
+    hackerList[1].currentTerminal = self.placeholder
   else
     self.output = "Password incorrect"
     table.insert(self.display, self.output)

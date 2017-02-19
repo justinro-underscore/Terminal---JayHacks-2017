@@ -36,8 +36,5 @@ function Terminal:draw()
   else
 	  love.graphics.setColor(53, 64, 124)
   end
-  if self.accessible then
-    love.graphics.print(self.terminalName .. " is accessible")
-  end
   love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
 end

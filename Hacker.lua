@@ -16,7 +16,6 @@ function Hacker:new()
   o.previousCommand = "" -- Holds the previous command
   o.secondInput = false -- Used for passwords
 
-  o.terminalTouch = nil
   o.currentTerminal = nil
 
   return o
@@ -91,7 +90,7 @@ function Hacker:runCommand(text)
   if command == "change" or command == "mode" then -- Runs changeMode
     self.commands:changeMode(object)
   elseif command == "access" then -- Runs access
-    if self.commands:access() then
+    if self.commands:access(object) then
       previousCommand = "access"
       secondInput = true
     end
@@ -101,18 +100,6 @@ function Hacker:runCommand(text)
   else -- Catch errors
     table.insert(self.display, "ERROR: Command not recognized")
   end
-end
-
-function Hacker:setTerminal(terminal)
-  if self.terminalTouch then
-    self.terminalTouch.accessible = false
-    if not terminal then
-      self.terminalTouch = nil
-      return nil
-    end
-  end
-  self.terminalTouch = terminal
-  self.terminalTouch.accessible = true
 end
 
 -- Draw the stuff
@@ -134,5 +121,10 @@ function Hacker:draw()
     yVal = yVal - 20
     fade = fade - 32
     love.graphics.setColor(0,255,0,fade)
+  end
+
+  love.graphics.setColor(255, 255, 255)
+  if self.currentTerminal then
+    love.graphics.print(self.currentTerminal.terminalName, 10, 10)
   end
 end
