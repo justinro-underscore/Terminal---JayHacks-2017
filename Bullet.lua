@@ -53,7 +53,7 @@ end
 
 function Bullet:draw()
   love.graphics.setColor(255, 255, 255)
-  love.graphics.circle("fill", self.position.x, self.position.y, self.radius, 6)
+  love.graphics.circle("fill", self.position.x, self.position.y + 10, self.radius, 6)
 end
 
 function Bullet:delete()

@@ -3,12 +3,17 @@ Level01 = {}
 function Level01:new()
   local o = {}
   setmetatable(o, {__index = self})
+  o.time = 0
+  o.endOfLevel = false
   o.isComplete = false
   return o
 end
 
 function Level01:loadState()
-	table.insert(spyList, Spy:new(200, 50, gamepadList[1])) -- new spy with the first gamepad
+  love.audio.setVolume(1)
+  love.audio.play(gameSong)
+
+	table.insert(spyList, Spy:new(200, 150, gamepadList[1])) -- new spy with the first gamepad
   table.insert(hackerList, Hacker:new())
 
   table.insert(vboxList, VBox:new(600, 200, true,"vbox_1"))
@@ -24,7 +29,8 @@ function Level01:loadState()
   terminalList[2]:addInfluence(doorList[1])
 
   table.insert(winObjectList, WinObject:new(250, 230))
-  table.insert(turretList, Turret:new(400, 268, "left"))
+
+  table.insert(turretList, Turret:new(400, 268, "right"))
   --table.insert(turretList, Turret:new(150, 150, "right"))
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
@@ -36,9 +42,18 @@ function Level01:loadState()
 
 end
 
-function Level01:checkWin()
-  if spyList[1]:winCheck() then
-    self.isComplete = true
+function Level01:checkWin(dt)
+  if spyList[1]:winCheck() or self.endOfLevel then
+    if self.time == 0 then
+      love.audio.stop()
+      love.audio.play(winSound)
+      self.endOfLevel = true
+    end
+
+    self.time = self.time + dt
+    if self.time > 7 then
+      self.isComplete = true
+    end
   end
 end
 
@@ -51,7 +66,7 @@ function Level01:input(text)
 end
 
 function Level01:updateState(dt)
-  self:checkWin()
+  self:checkWin(dt)
 	for _, v in ipairs(updateableLists) do
     for __, vv in ipairs(v) do
       if not vv.isKill then
@@ -61,8 +76,17 @@ function Level01:updateState(dt)
   end
 
   if spyList[1].isKill then
-    self:clearState()
-    self:loadState()
+    if self.time == 0 then
+      love.audio.stop()
+      love.audio.play(deathSound)
+    end
+
+    self.time = self.time + dt
+    if self.time > 3 then
+      self:clearState()
+      self:loadState()
+      self.time = 0
+    end
   end
 end
 
