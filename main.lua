@@ -23,6 +23,11 @@ require 'WinObject'
 objectFont = love.graphics.setNewFont("cour.ttf", 7)
 hackerFont = love.graphics.setNewFont("cour.ttf", 13)
 
+menuSong = love.audio.newSource("Sound/Game Menu Track.wav") -- import music
+gameSong = love.audio.newSource("Sound/Gameplay Track.wav")
+deathSound = love.audio.newSource("Sound/Death Noise.wav")
+winSound = love.audio.newSource("Sound/Victory Screen.wav")
+
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)

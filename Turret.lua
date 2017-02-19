@@ -7,6 +7,7 @@ function Turret:new(x,y,facing)
   o.position = vector.new(x,y)
   o.size = vector.new(32, 64)
   o.facing = facing
+  o.sprite = love.graphics.newImage("Spy Game Sprites/Turret.png")
 
   o.time = 0
   o.count = 0
@@ -35,7 +36,9 @@ function Turret:update(dt)
 end
 
 function Turret:draw()
-	love.graphics.setColor(255, 255, 0, 255)
-  love.graphics.print(self.time)
-  love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
+  if self.facing == "right" then
+    love.graphics.draw(self.sprite, self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
+	elseif self.facing == "left" then
+    love.graphics.draw(self.sprite, self.position.x + self.size.x / 2, self.position.y - self.size.y / 2, 0, -2, 2) -- Places the sprite.
+	end
 end
