@@ -18,7 +18,7 @@ To Control the Stage - Type Keywords hidden in the level
 
 We hope you enjoy our game, because we know we had a fun time coding it.
 
-# SpyHacker
+# Terminal
 Entry for Jayhacks 2017
 Developed by Justin Roderman, Alex Shadley, Harrison Luo, and Jesse Truong.
 And special thanks for everyone in the squad for their endless support, and Tim & Tristan for teaching us about their awesome music.
