@@ -38,7 +38,9 @@ function Bullet:collide()
       self.isKill = true
     elseif otherParent.tag == "Spy" then
       self.isKill = true
-      otherParent.isKill = true -- sloppy hack because we ran out of time
+      if not (otherParent.mode == "defense") then
+				otherParent.isKill = true
+			end -- sloppy hack because we ran out of time
     elseif otherParent.tag == "VBoxOn" then
       self.isKill = true
     elseif otherParent.tag == "Trap" then

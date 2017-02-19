@@ -24,7 +24,6 @@ function Level01:loadState()
   terminalList[2]:addInfluence(doorList[1])
 
   table.insert(winObjectList, WinObject:new(250, 230))
-
   --table.insert(turretList, Turret:new(200, 100, "left"))
   --table.insert(turretList, Turret:new(150, 150, "right"))
 
