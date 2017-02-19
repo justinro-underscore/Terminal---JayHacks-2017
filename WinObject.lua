@@ -12,5 +12,6 @@ function WinObject:new(x,y)
 end
 
 function WinObject:draw()
+  love.graphics.setColor(255, 255, 255, 255)
   love.graphics.draw(self.sprite , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
 end
