@@ -30,6 +30,8 @@ function Spy:new(x, y, controller)
 	o.JUMP_SPEED = 300
 	o.RUN_SPEED = 100
 
+	o.terminalTouch = nil
+
 	return o
 end
 
@@ -37,8 +39,28 @@ function Spy:update(dt)
 	self:collide()
 	self:changeState(dt)
 	self:runState(dt)
+	self:terminal()
 
 	self.collider:moveTo(self.position.x, self.position.y)
+end
+
+function Spy:terminal()
+	local dx = 0
+	local dy = 0
+	for i, v in ipairs(terminalList) do
+		dx = math.abs(v.position.x - self.position.x)
+		dy = math.abs(v.position.y - self.position.y)
+		if (dx <= (v.size.x / 2 + self.size.x / 2)) and (dy <= (v.size.y / 2 + self.size.y / 2)) then
+			self.terminalTouch = v
+			v.accessible = true
+			return nil
+		else
+			if self.terminalTouch then
+				v.accessible = false
+			end
+		end
+	end
+	self.terminalTouch = nil
 end
 
 function Spy:collide()

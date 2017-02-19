@@ -11,7 +11,7 @@ function Level01:loadState()
   table.insert(hackerList, Hacker:new())
   table.insert(terminalList, Terminal:new(300, 202, "terminal_1", false, "poop"))
   terminalList[1]:addInfo("Did you know that Alex is a poser?")
-  table.insert(terminalList, Terminal:new(350, 202, "terminal_2", true, ""))
+  table.insert(terminalList, Terminal:new(450, 202, "terminal_2", true, ""))
   terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart

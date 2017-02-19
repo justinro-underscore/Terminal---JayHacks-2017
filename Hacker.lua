@@ -12,18 +12,14 @@ function Hacker:new()
   o.display = {} -- List of already inputted texts and response texts
 
   o.commands = HackerCommands:new() -- Holds the hacker commands
-  o.commands:setDisplay(o.display)
-  o.previousCommand = ""
-  o.secondInput = false
+  o.commands:setDisplay(o.display) -- So HackerCommands has access to the display
+  o.previousCommand = "" -- Holds the previous command
+  o.secondInput = false -- Used for passwords
 
-  o.spy = nil
+  o.terminalTouch = nil
+  o.currentTerminal = nil
 
   return o
-end
-
-function Hacker:setSpy(spy)
-  self.spy = spy
-  self.commands:setSpy(spy)
 end
 
 -- Blinky thingy
@@ -41,7 +37,7 @@ function Hacker:update(dt)
     for i = 2, table.getn(self.display),1 do
       self.display[i-1] = self.display[i] -- Move all variables down
     end
-    self.display[table.getn(self.display)] = nil
+    self.display[table.getn(self.display)] = nil -- Remove the last element in the table
   end
 end
 
@@ -68,16 +64,16 @@ end
 
 -- Will run commands using the submitInput variable once we have commands to run
 function Hacker:runCommand(text)
-  local command = ""
-  local object = ""
-  local prompt = text
+  local command = "" -- Command that runs
+  local object = "" -- Everything that follows the command
+  local prompt = text -- Holds the line of text
 
-  if prompt == "" then
+  if prompt == "" then -- If no text, do nothing
     return nil
   end
 
-  if secondInput then
-    if previousCommand == "access" then
+  if secondInput then -- If password needed, ignore the commands
+    if previousCommand == "access" then -- If password needed...
       self.commands:password(text)
       secondInput = false
       return nil
@@ -89,22 +85,34 @@ function Hacker:runCommand(text)
     command = string.sub(prompt, 1, index-1)
     object = string.sub(prompt, index+1)
   else
-    command = prompt
+    command = prompt -- If there is no space, command becomes the entire line
   end
 
-  if command == "change" or command == "mode" then
+  if command == "change" or command == "mode" then -- Runs changeMode
     self.commands:changeMode(object)
-  elseif command == "access" then
-    if self.commands:access(object) then
+  elseif command == "access" then -- Runs access
+    if self.commands:access() then
       previousCommand = "access"
       secondInput = true
     end
-  elseif command == "quit" then
+  elseif command == "quit" then -- Quits. (Why did I add this?)
     table.insert(self.display, "WHY WOULD YOU DO THIS")
     love.event.quit()
-  else
+  else -- Catch errors
     table.insert(self.display, "ERROR: Command not recognized")
   end
+end
+
+function Hacker:setTerminal(terminal)
+  if self.terminalTouch then
+    self.terminalTouch.accessible = false
+    if not terminal then
+      self.terminalTouch = nil
+      return nil
+    end
+  end
+  self.terminalTouch = terminal
+  self.terminalTouch.accessible = true
 end
 
 -- Draw the stuff

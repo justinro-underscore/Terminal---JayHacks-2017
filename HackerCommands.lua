@@ -15,16 +15,11 @@ function HackerCommands:new(spy)
   setmetatable(o, {__index = self})
 
   o.output = ""
-  o.spy = nil
   o.display = {}
 
   o.placeholder = "" -- This variable holds any information needed for a future command (Ex. password)
 
   return o
-end
-
-function HackerCommands:setSpy(spy)
-  self.spy = spy
 end
 
 function HackerCommands:setDisplay(display)
@@ -45,48 +40,40 @@ function HackerCommands:changeMode(mode)
   table.insert(self.display, self.output)
 end
 
-function HackerCommands:access(terminal)
+function HackerCommands:access()
   self.output = ""
-  if terminal == "" then
-    self.output = "Please input a terminal to access"
-    table.insert(self.display, self.output)
-    return false
-  end
-  for i, v in ipairs(terminalList) do
-    if terminal == v.terminalName then
-      self.output = "Terminal '" .. terminal .. "' found"
-      if v.unlocked then
-        self.output = self.output .. ". Accessing terminal..."
-        table.insert(self.display, self.output)
-        for ii, vv in ipairs(v:unlock()) do
-          table.insert(self.display, "'" .. vv .. "'")
-        end
-        return false
-      else
-        self.output = self.output .. ". Please input password:"
-        self.placeholder = terminal
-        table.insert(self.display, self.output)
-        return true
+  local terminal = spyList[1].terminalTouch
+  if terminal then
+    self.output = "Terminal '" .. terminal.terminalName .. "' found"
+    if terminal.unlocked then
+      self.output = self.output .. ". Accessing terminal..."
+      table.insert(self.display, self.output)
+      for ii, vv in ipairs(terminal:unlock()) do
+        table.insert(self.display, "'" .. vv .. "'")
       end
+      return false
+    else
+      self.output = self.output .. ". Please input password:"
+      self.placeholder = terminal
+      table.insert(self.display, self.output)
+      return true
     end
   end
-  self.output = "ERROR: Terminal '" .. terminal .. "' does not exist"
+  self.output = "ERROR: No terminal detected"
   table.insert(self.display, self.output)
   return false
 end
 
 function HackerCommands:password(pass)
   self.output = ""
-  for i, v in ipairs(terminalList) do
-    if self.placeholder == v.terminalName and pass == v.terminalPassword then -- Placeholder will have name of the terminal
-      self.output = "Password accepted. Accessing terminal..."
-      table.insert(self.display, self.output)
-      for ii, vv in ipairs(v:unlock()) do
-        table.insert(self.display, vv)
-      end
-      return nil
+  if self.placeholder.terminalPassword == pass then -- Placeholder will have name of the terminal
+    self.output = "Password accepted. Accessing terminal..."
+    table.insert(self.display, self.output)
+    for ii, vv in ipairs(self.placeholder:unlock()) do
+      table.insert(self.display, vv)
     end
+  else
+    self.output = "Password incorrect"
+    table.insert(self.display, self.output)
   end
-  self.output = "Password incorrect"
-  table.insert(self.display, self.output)
 end
