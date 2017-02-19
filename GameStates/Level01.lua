@@ -19,6 +19,7 @@ function Level01:loadState()
   terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
   terminalList[2]:addInfluence(vboxList[1])
   terminalList[2]:addInfluence(vboxList[2])
+  table.insert(doorList, Door:new(500, 202))
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 500))
