@@ -284,7 +284,7 @@ function Spy:runRun(dt)
 	end
 
 	local speedCap
-	if self.mode == defense then
+	if self.mode == "defense" then
 		speedCap = self.DEFENSE_SPEED
 	else
 		speedCap = self.RUN_SPEED
@@ -360,5 +360,6 @@ function Spy:draw()
 end
 
 function Spy:delete()
+	debug.debug()
   HC.remove(self.collider)
 end

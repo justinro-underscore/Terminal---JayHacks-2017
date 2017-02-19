@@ -243,7 +243,6 @@ function Level01:loadState()
   table.insert(coordList, 650)
 
   table.insert(winObjectList, WinObject:new(9252, 716))
-
 end
 
 function Level01:checkWin(dt)
@@ -317,10 +316,12 @@ end
 
 function Level01:clearState()
   for k in pairs(wallList) do
+    HC.remove(wallList[k].collider)
     wallList[k] = nil
   end
 
   for k in pairs(spyList) do
+    HC.remove(spyList[k].collider)
     spyList[k] = nil
   end
 
@@ -329,10 +330,12 @@ function Level01:clearState()
   end
 
   for k in pairs(vboxList) do
+    HC.remove(vboxList[k].collider)
     vboxList[k] = nil
   end
 
   for k in pairs(trapList) do
+    HC.remove(trapList[k].collider)
     trapList[k] = nil
   end
 
@@ -349,6 +352,7 @@ function Level01:clearState()
   end
 
   for k in pairs(doorList) do
+    HC.remove(doorList[k].collider)
     doorList[k] = nil
   end
 end
