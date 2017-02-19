@@ -75,7 +75,6 @@ function Spy:update(dt)
 	self.collider:moveTo(self.position.x, self.position.y)
 
 	if self.isKill then
-		debug.debug()
 		self:delete()
 	end
 end
@@ -285,7 +284,7 @@ function Spy:runRun(dt)
 	end
 
 	local speedCap
-	if self.mode == defense then
+	if self.mode == "defense" then
 		speedCap = self.DEFENSE_SPEED
 	else
 		speedCap = self.RUN_SPEED

@@ -31,6 +31,7 @@ function Level01:loadState()
   table.insert(winObjectList, WinObject:new(250, 230))
 
   table.insert(turretList, Turret:new(400, 268, "right"))
+  table.insert(trapList, Trap:new(200, 50))
   --table.insert(turretList, Turret:new(150, 150, "right"))
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
