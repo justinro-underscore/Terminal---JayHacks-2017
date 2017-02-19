@@ -45,7 +45,7 @@ function Spy:collide()
 	for other, delta in pairs(HC.collisions(self.collider)) do
 		local otherParent = other.parent
 
-		if otherParent.tag == "Wall" and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
+		if (otherParent.tag == "Wall" or otherParent.tag == "VBoxOn") and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
 
 			if math.abs(delta.x) > 0 then
 				if self.position.x < otherParent.position.x then
@@ -74,6 +74,11 @@ end
 
 function Spy:checkGround() -- returns true true if the spy is above a block; used to determine if the spy walked off a ledge
 	for i, v in ipairs(wallList) do
+		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) then
+			return true
+		end
+	end
+	for i, v in ipairs(vboxList) do
 		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) then
 			return true
 		end

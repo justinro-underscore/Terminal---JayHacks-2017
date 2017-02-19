@@ -10,6 +10,8 @@ function Level01:loadState()
 	table.insert(spyList, Spy:new(200, 50, gamepadList[1])) -- new spy with the first gamepad
   table.insert(hackerList, Hacker:new())
 
+  table.insert(vboxList, VBox:new(600, 200, true))
+  table.insert(vboxList, VBox:new(700, 200, false))
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 250))
 	end
