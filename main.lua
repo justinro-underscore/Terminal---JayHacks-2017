@@ -11,6 +11,7 @@ require 'Hacker'
 require 'HackerCommands'
 require 'Spy'
 require 'Wall'
+require 'Terminal'
 require 'VBox'
 --require 'Door'
 
@@ -26,10 +27,11 @@ function love.load()
   hackerList = {}
   spyList = {}
   wallList = {}
+  terminalList = {}
   vboxList = {}
 
   updateableLists = {gamepadList, hackerList, spyList}
-  drawableLists = {hackerList, vboxList, spyList, wallList}
+  drawableLists = {hackerList, terminalList, vboxList, spyList, wallList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))

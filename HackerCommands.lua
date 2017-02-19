@@ -15,14 +15,11 @@ function HackerCommands:new(spy)
   setmetatable(o, {__index = self})
 
   o.output = ""
-  o.spy = nil
-  o.display ={}
+  o.display = {}
+
+  o.placeholder = "" -- This variable holds any information needed for a future command (Ex. password)
 
   return o
-end
-
-function HackerCommands:setSpy(spy)
-  self.spy = spy
 end
 
 function HackerCommands:setDisplay(display)
@@ -43,7 +40,53 @@ function HackerCommands:changeMode(mode)
   table.insert(self.display, self.output)
 end
 
-function HackerCommands:access(terminal)
+function HackerCommands:access(object)
   self.output = ""
-  --for i,
+  local terminal = spyList[1].terminalTouch
+  if terminal == hackerList[1].currentTerminal then
+    table.insert(self.display, "Already connected to '" .. hackerList[1].currentTerminal.terminalName .. "'")
+    return false
+  end
+  if object == "files" or object == "file" then
+    if hackerList[1].currentTerminal then
+      table.insert(self.display, "Accessing terminal '" .. hackerList[1].currentTerminal.terminalName .. "' files...")
+      for i, v in ipairs(hackerList[1].currentTerminal:unlock()) do
+        table.insert(self.display, "'" .. v .. "'")
+      end
+    else
+      self.output = "ERROR: Not connected to a terminal"
+      table.insert(self.display, self.output)
+    end
+    return false
+  end
+  if terminal then
+    self.output = "Terminal '" .. terminal.terminalName .. "' found"
+    if terminal.unlocked then
+      self.output = self.output .. ". Accessing terminal..."
+      table.insert(self.display, self.output)
+      hackerList[1].currentTerminal = terminal
+      return false
+    else
+      self.output = self.output .. ". Please input password:"
+      self.placeholder = terminal
+      table.insert(self.display, self.output)
+      return true
+    end
+  end
+  self.output = "ERROR: No terminal detected"
+  table.insert(self.display, self.output)
+  return false
+end
+
+function HackerCommands:password(pass)
+  self.output = ""
+  if self.placeholder.terminalPassword == pass then -- Placeholder will have name of the terminal
+    self.output = "Password accepted. Accessing terminal..."
+    table.insert(self.display, self.output)
+    self.placeholder:unlock()
+    hackerList[1].currentTerminal = self.placeholder
+  else
+    self.output = "Password incorrect"
+    table.insert(self.display, self.output)
+  end
 end
