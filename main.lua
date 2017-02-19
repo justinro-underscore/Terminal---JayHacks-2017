@@ -8,22 +8,42 @@ require 'GameStates/Level01'
 
 require 'Gamepad'
 require 'Hacker'
+require 'HackerCommands'
 require 'Spy'
 require 'Wall'
 require 'Bullet'
---require 'Door'
+require 'Terminal'
+require 'VBox'
+require 'Door'
+require 'Trap'
 
-hackerFont = love.graphics.setNewFont("cour.ttf", 20)
+objectFont = love.graphics.setNewFont("cour.ttf", 7)
+hackerFont = love.graphics.setNewFont("cour.ttf", 13)
 
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
 
+  --sets up global reference for all objects
+  gamepadList = {}
+  hackerList = {}
+  spyList = {}
+  wallList = {}
+  terminalList = {}
+  vboxList = {}
+  doorList = {}
+  trapList = {}
+
+  updateableLists = {gamepadList, hackerList, spyList}
+  drawableLists = {vboxList, spyList, wallList, trapList, doorList, hackerList, terminalList}
+
+  local joysticks = love.joystick.getJoysticks()
+	table.insert(gamepadList, Gamepad:new(joysticks[1]))
+
 	gameTime = 0
   state = GameState:new()
 
   love.keyboard.setKeyRepeat(true)
-  --hacker = Hacker:new()
 end
 
 function love.update(dt)
@@ -31,8 +51,6 @@ function love.update(dt)
 
   state:changeState(stateName)
 	state:updateState(dt)
-
-  --hacker:update(dt)
 end
 
 function love.keypressed(key)
@@ -40,17 +58,16 @@ function love.keypressed(key)
 		love.event.quit()
 	end
   if key == "backspace" then
-    hacker:keyInput(key)
+    state:keyInput(key)
   elseif key == "return" then
-    hacker:keyInput(key)
+    state:keyInput(key)
   end
 end
 
---[[function love.textinput(text)
-	hacker:input(text)
-end]]
+function love.textinput(text)
+	state:input(text)
+end
 
 function love.draw()
   state:draw()
-  --hacker:draw()
 end

@@ -1,6 +1,6 @@
-Wall = {}
+Trap = {}
 
-function Wall:new(x, y) -- creates a new wall class and places it in an intial position
+function Trap:new(x, y) -- creates a new wall class and places it in an intial position
   local o = {}
   setmetatable(o, {__index = self})
 
@@ -9,13 +9,13 @@ function Wall:new(x, y) -- creates a new wall class and places it in an intial p
 
 	o.collider = HC.rectangle(o.position.x - o.size.x / 2, o.position.y - o.size.x / 2, o.size.x, o.size.y)
 	o.collider.parent = o -- used so that colliders can find their parent object
-	o.tag = "Wall"
+	o.tag = "Trap"
 
   return o
 end
 
-function Wall:draw()
-	love.graphics.setColor(255, 255, 255)
+function Trap:draw()
+	love.graphics.setColor(255, 0, 0)
   love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
 	love.graphics.setColor(255, 0, 0)
 	self.collider:draw()
