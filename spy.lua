@@ -50,7 +50,7 @@ function Spy:new(x, y, controller)
 	o.terminalTouch = nil
 
 	o.isKill = false
-  
+
 	return o
 end
 
@@ -61,6 +61,7 @@ function Spy:update(dt)
 	self:face()
 	self:updateSprite(dt)
 	self:terminal()
+	self:winCheck()
 
 	self.collider:moveTo(self.position.x, self.position.y)
 
@@ -86,6 +87,20 @@ function Spy:terminal()
 		end
 	end
 	self.terminalTouch = nil
+end
+
+function Spy:winCheck()
+  local dx = 0
+  local dy = 0
+  dx = math.abs(winObjectList[1].position.x - self.position.x)
+  dy = math.abs(winObjectList[1].position.y - self.position.y)
+  if (dx <= (winObjectList[1].size.x / 2 + self.size.x / 2)) and (dy <= (winObjectList[1].size.y / 2 + self.size.y / 2)) then
+		if self.controller.bEdge then
+			print("Chec")
+			return true
+		end
+  end
+	return false
 end
 
 function Spy:updateSprite(dt)
@@ -134,7 +149,7 @@ function Spy:collide()
 						self.position.x = self.position.x + math.abs(delta.x)
 					end
 				end
-        
+
 			else
 				if math.abs(self.position.x - otherParent.position.x) < (self.size.x + otherParent.size.x) / 2 - 2 then
 					if self.position.y < otherParent.position.y then
@@ -298,7 +313,7 @@ function Spy:draw()
 	  love.graphics.draw(self.sprite, x, y, 0, -2, 2) -- Places the sprite.
 	end
 end
-  
+
 function Spy:delete()
   HC.remove(self.collider)
 end
