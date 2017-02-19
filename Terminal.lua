@@ -17,12 +17,17 @@ function Terminal:new(x, y, name, unlocked, password)
   o.tag = "Terminal" -- used for other objects to find out what kind of object this is
 
   o.information = {}
+  o.influence = {}
 
   return o
 end
 
 function Terminal:addInfo(info)
   table.insert(self.information, info)
+end
+
+function Terminal:addInfluence(object)
+  table.insert(self.influence, object)
 end
 
 function Terminal:unlock()
@@ -37,4 +42,14 @@ function Terminal:draw()
 	  love.graphics.setColor(53, 64, 124)
   end
   love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
+
+  if hackerList[1] and hackerList[1].currentTerminal and hackerList[1].currentTerminal == self then
+    love.graphics.setFont(hackerFont)
+    for _, v in ipairs(self.influence) do
+      love.graphics.setColor(0, 255, 0, 120)
+      love.graphics.line(self.position.x, self.position.y, v.position.x, v.position.y)
+      love.graphics.setColor(0, 255, 0)
+      love.graphics.print(v.name, v.position.x - string.len(v.name) * 4, v.position.y + v.size.y / 2)
+    end
+  end
 end

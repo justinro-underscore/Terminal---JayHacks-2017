@@ -1,11 +1,12 @@
 VBox = {}
 
-function VBox:new(x,y,activated)
+function VBox:new(x,y,activated,name)
   local o = {}
   setmetatable(o, {__index = self})
 
   o.position = vector.new(x, y) -- places the position vector
   o.size = vector.new(64, 64)
+  o.name = name
 
   o.activated = activated
 
@@ -21,14 +22,18 @@ function VBox:new(x,y,activated)
   return o
 end
 
-function VBox:toggleStage()
+function VBox:toggle()
+  local result = ""
   if self.activated then
     self.activated = false
     self.tag = "VBoxOff"
+    result = self.name .. " has been turned to the OFF state"
   else
     self.activated = true
-    self.activated = "VBoxOn"
+    self.tag = "VBoxOn"
+    result = self.name .. " has been turned to the ON state"
   end
+  return result
 end
 
 function VBox:draw()

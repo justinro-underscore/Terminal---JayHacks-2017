@@ -17,7 +17,7 @@ function Spy:new(x, y, controller)
 	]]
 	o.state = "air"
 
-	o.mode = "none"
+	o.mode = "acrobatic"
 
 	o.hitGround = false -- will be set to true by the collision function, used by changestate
 	o.hitWall = false
@@ -35,6 +35,7 @@ function Spy:new(x, y, controller)
 
 	o.terminalTouch = nil
 
+	o.isKill = false
 	return o
 end
 
@@ -45,6 +46,10 @@ function Spy:update(dt)
 	self:terminal()
 
 	self.collider:moveTo(self.position.x, self.position.y)
+
+	if self.isKill then
+		self:delete()
+	end
 end
 
 function Spy:terminal()
@@ -100,6 +105,8 @@ function Spy:collide()
 				end
 			end
 
+		elseif otherParent.tag == "Trap" then
+			self.isKill = true
 		end
   end
 end
@@ -128,6 +135,14 @@ function Spy:checkWallJump()
 			end
 		end
 
+		for i, v in ipairs(vboxList) do
+			if v.collider:contains(self.position.x + (self.size.x / 2) + 15, self.position.y + (self.size.y / 2) - 2) then
+				return true, "left"
+			elseif self.velocity.x <= 0 and v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) then
+				return true, "right"
+			end
+		end
+
 	end
 	return false
 end
@@ -145,7 +160,7 @@ function Spy:changeState(dt)
 		if self.hitGround then
 			self.hitGround = false
 			self.state = "run"
-			self.velocity.x, self.velocity.y = 0, 0
+			self.velocity.y = 0
 		end
 	end
 end
@@ -223,4 +238,8 @@ function Spy:draw()
 	love.graphics.rectangle("fill", self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
 	love.graphics.setColor(255, 0, 0)
 	love.graphics.points(self.position.x + (self.size.x / 2) + 7, self.position.y + (self.size.y / 2) - 2)
+end
+
+function Spy:delete()
+  HC.remove(self.collider)
 end

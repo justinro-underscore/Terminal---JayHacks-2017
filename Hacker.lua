@@ -94,12 +94,19 @@ function Hacker:runCommand(text)
       previousCommand = "access"
       secondInput = true
     end
+  elseif command == "toggle" then
+    self.commands:toggleVBox(object)
   elseif command == "quit" then -- Quits. (Why did I add this?)
     table.insert(self.display, "WHY WOULD YOU DO THIS")
     love.event.quit()
   else -- Catch errors
     table.insert(self.display, "ERROR: Command not recognized")
   end
+end
+
+function Hacker:setCurrentTerminal(terminal)
+  self.currentTerminal = terminal
+  self.commands.currentTerminal = terminal
 end
 
 -- Draw the stuff
