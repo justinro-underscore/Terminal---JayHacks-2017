@@ -28,11 +28,11 @@ function GameState:changeState(state) -- Handle state changes
 end
 
 function GameState:keyInput(key)
-  self.currentState:key(key)
+  self.currentState:keyInput(key)
 end
 
-function GameState:textInput(text)
-  self.currentState:text(text)
+function GameState:input(text)
+  self.currentState:input(text)
 end
 
 function GameState:updateState(dt) -- calls the update method of whatever the current state is

@@ -57,7 +57,7 @@ function love.keypressed(key)
 end
 
 function love.textinput(text)
-	state:textInput(text)
+	state:input(text)
 end
 
 function love.draw()
