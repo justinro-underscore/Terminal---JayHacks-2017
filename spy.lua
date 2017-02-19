@@ -130,15 +130,15 @@ function Spy:checkWallJump()
 		for i, v in ipairs(wallList) do
 			if v.collider:contains(self.position.x + (self.size.x / 2) + 15, self.position.y + (self.size.y / 2) - 2) then
 				return true, "left"
-			elseif self.velocity.x <= 0 and v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) then
+			elseif v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) then
 				return true, "right"
 			end
 		end
 
 		for i, v in ipairs(vboxList) do
-			if v.collider:contains(self.position.x + (self.size.x / 2) + 15, self.position.y + (self.size.y / 2) - 2) then
+			if v.collider:contains(self.position.x + (self.size.x / 2) + 15, self.position.y + (self.size.y / 2) - 2) and (v.tag == "VBoxOn") then
 				return true, "left"
-			elseif self.velocity.x <= 0 and v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) then
+			elseif v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) and (v.tag == "VBoxOn") then
 				return true, "right"
 			end
 		end
