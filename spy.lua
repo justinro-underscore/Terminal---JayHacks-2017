@@ -33,16 +33,24 @@ function Spy:new(x, y, controller)
 	o.RUN_SPEED = 200
 	o.DEFENSE_SPEED = 100
 
-	o.spriteFrames = {love.graphics.newImage("Spy Game Sprites/Standing.png"),
-										love.graphics.newImage("Spy Game Sprites/Running Straight Left.png"),
-										love.graphics.newImage("Spy Game Sprites/Mid-Running Right.png"),
-										love.graphics.newImage("Spy Game Sprites/Running Right.png"),
-										love.graphics.newImage("Spy Game Sprites/Running Straight Right.png"),
-										love.graphics.newImage("Spy Game Sprites/Mid-Running Left.png"),
-										love.graphics.newImage("Spy Game Sprites/Running Left.png"),
-										love.graphics.newImage("Spy Game Sprites/Jumping.png")}
+	o.spriteFramesAcro = {love.graphics.newImage("Spy Game Sprites/Standing Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Straight Left Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Mid-Running Right Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Right Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Straight Right Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Mid-Running Left Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Left Acro.png"),
+												love.graphics.newImage("Spy Game Sprites/Jumping Acro.png")}
+	o.spriteFramesDefe = {love.graphics.newImage("Spy Game Sprites/Standing.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Straight Left.png"),
+												love.graphics.newImage("Spy Game Sprites/Mid-Running Right.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Right.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Straight Right.png"),
+												love.graphics.newImage("Spy Game Sprites/Mid-Running Left.png"),
+												love.graphics.newImage("Spy Game Sprites/Running Left.png"),
+												love.graphics.newImage("Spy Game Sprites/Jumping.png")}
 	o.spriteFra = 2
-	o.sprite = o.spriteFrames[1]
+	o.sprite = o.spriteFramesAcro[1]
 	o.time = 0
 
 	o.RUN_ACCELERATION = 900
@@ -104,27 +112,53 @@ function Spy:winCheck()
 end
 
 function Spy:updateSprite(dt)
-	self.time = self.time + dt
-	if self.state == "air" then
-		self.sprite = self.spriteFrames[8]
-		self.spriteFra = 2
-		self.time = 0
-	elseif self.velocity.x == 0 then
-		self.sprite = self.spriteFrames[1]
-		self.spriteFra = 2
-		self.time = 0
-	elseif self.state == "air" then
-		self.sprite = self.spriteFrames[8]
-		self.spriteFra = 2
-		self.time = 0
-	else
-		self.sprite = self.spriteFrames[self.spriteFra]
-		if self.time >= (40 / self.RUN_SPEED) then
-			self.spriteFra = self.spriteFra + 1
-			self.time = self.time - (40 / self.RUN_SPEED)
-		end
-		if self.spriteFra > 7 then
+	if self.mode == "acrobatic" then
+		self.time = self.time + dt
+		if self.state == "air" then
+			self.sprite = self.spriteFramesAcro[8]
 			self.spriteFra = 2
+			self.time = 0
+		elseif self.velocity.x == 0 then
+			self.sprite = self.spriteFramesAcro[1]
+			self.spriteFra = 2
+			self.time = 0
+		elseif self.state == "air" then
+			self.sprite = self.spriteFramesAcro[8]
+			self.spriteFra = 2
+			self.time = 0
+		else
+			self.sprite = self.spriteFramesAcro[self.spriteFra]
+			if self.time >= (40 / self.RUN_SPEED) then
+				self.spriteFra = self.spriteFra + 1
+				self.time = self.time - (40 / self.RUN_SPEED)
+			end
+			if self.spriteFra > 7 then
+				self.spriteFra = 2
+			end
+		end
+	else
+		self.time = self.time + dt
+		if self.state == "air" then
+			self.sprite = self.spriteFramesDefe[8]
+			self.spriteFra = 2
+			self.time = 0
+		elseif self.velocity.x == 0 then
+			self.sprite = self.spriteFramesDefe[1]
+			self.spriteFra = 2
+			self.time = 0
+		elseif self.state == "air" then
+			self.sprite = self.spriteFramesDefe[8]
+			self.spriteFra = 2
+			self.time = 0
+		else
+			self.sprite = self.spriteFramesDefe[self.spriteFra]
+			if self.time >= (40 / self.RUN_SPEED) then
+				self.spriteFra = self.spriteFra + 1
+				self.time = self.time - (40 / self.RUN_SPEED)
+			end
+			if self.spriteFra > 7 then
+				self.spriteFra = 2
+			end
 		end
 	end
 end
