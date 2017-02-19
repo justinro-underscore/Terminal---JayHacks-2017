@@ -10,12 +10,13 @@ Hacker commands:
 
 HackerCommands = {}
 
-function HackerCommands:new(spy)
+function HackerCommands:new()
   local o = {}
   setmetatable(o, {__index = self})
 
   o.output = ""
   o.display = {}
+  o.currentTerminal = nil
 
   o.placeholder = "" -- This variable holds any information needed for a future command (Ex. password)
 
@@ -43,14 +44,14 @@ end
 function HackerCommands:access(object)
   self.output = ""
   local terminal = spyList[1].terminalTouch
-  if terminal == hackerList[1].currentTerminal then
-    table.insert(self.display, "Already connected to '" .. hackerList[1].currentTerminal.terminalName .. "'")
+  if terminal == self.currentTerminal then
+    table.insert(self.display, "Already connected to '" .. self.currentTerminal.terminalName .. "'")
     return false
   end
   if object == "files" or object == "file" then
-    if hackerList[1].currentTerminal then
-      table.insert(self.display, "Accessing terminal '" .. hackerList[1].currentTerminal.terminalName .. "' files...")
-      for i, v in ipairs(hackerList[1].currentTerminal:unlock()) do
+    if self.currentTerminal then
+      table.insert(self.display, "Accessing terminal '" .. self.currentTerminal.terminalName .. "' files...")
+      for i, v in ipairs(self.currentTerminal:unlock()) do
         table.insert(self.display, "'" .. v .. "'")
       end
     else
@@ -64,7 +65,7 @@ function HackerCommands:access(object)
     if terminal.unlocked then
       self.output = self.output .. ". Accessing terminal..."
       table.insert(self.display, self.output)
-      hackerList[1].currentTerminal = terminal
+      hackerList[1]:setCurrentTerminal(terminal)
       return false
     else
       self.output = self.output .. ". Please input password:"
@@ -84,9 +85,34 @@ function HackerCommands:password(pass)
     self.output = "Password accepted. Accessing terminal..."
     table.insert(self.display, self.output)
     self.placeholder:unlock()
-    hackerList[1].currentTerminal = self.placeholder
+    hackerList[1]:setCurrentTerminal(self.placeholder)
   else
     self.output = "Password incorrect"
+    table.insert(self.display, self.output)
+  end
+end
+
+function HackerCommands:toggleVBox(box)
+  self.output = ""
+  if box == "" then
+    self.output = "VBox's available: {"
+    local numLength = (table.getn(self.currentTerminal.influence)) --
+    for i = 1, (numLength - 1) do
+      self.output = self.output .. "'" .. self.currentTerminal.influence[i].name .. "', "
+    end
+    self.output = self.output .. "'" .. self.currentTerminal.influence[numLength].name .. "'}"
+    table.insert(self.display, self.output)
+  else
+    for i, v in ipairs(self.currentTerminal.influence) do
+      if box == v.name then
+        self.output = "Successfully toggled '" .. v.name .. "'"
+        table.insert(self.display, self.output)
+        local result = v:toggle()
+        table.insert(self.display, result)
+        return nil
+      end
+    end
+    self.output = "Could not find VBox with name of '" .. box .. "'"
     table.insert(self.display, self.output)
   end
 end
