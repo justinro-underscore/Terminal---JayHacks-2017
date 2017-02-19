@@ -70,6 +70,9 @@ function Hacker:draw()
   local yVal = love.graphics.getHeight() - 60 -- Spaces inbetween previous inputs
   local fade = 255 -- Fades the text into the background
   local numLength = (table.getn(self.inputted)) -- Length of previous input list
+  if yVal <= (love.graphics.getHeight() / 2) then
+    
+  end
   for i = numLength, 1, -1 do -- Goes through the list backwards
     love.graphics.print("> " .. self.inputted[i], 10, yVal)
     yVal = yVal - 30
