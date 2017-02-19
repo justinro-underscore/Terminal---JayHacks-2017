@@ -9,6 +9,8 @@ function Door:new(x,y,name) --Creates the door
   o.name = name
   o.isOpen = false -- bool holds if the door is open or closed
 
+  o.sprite = love.graphics.newImage("Spy Game Sprites/More Basic Metal Door")
+  
   o.collider = HC.rectangle(o.position.x - o.size.x / 2, o.position.y - o.size.x / 2, o.size.x, o.size.y)
   o.collider.parent = o -- used so that colliders can find their parent object
   o.tag = "DoorClosed"

@@ -22,6 +22,7 @@ hackerFont = love.graphics.setNewFont("cour.ttf", 13)
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
+  love.graphics.setDefaultFilter("nearest", "nearest")
 
   --sets up global reference for all objects
 
