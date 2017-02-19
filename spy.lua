@@ -7,6 +7,7 @@ function Spy:new(x, y, controller)
 	o.position = vector.new(x, y)
 	o.size = vector.new(64, 96)
 	o.velocity = vector.new(0, 0)
+	o.facing = "right" -- The way that the spy is facing
 
 	o.controller = controller
 
@@ -30,12 +31,26 @@ function Spy:new(x, y, controller)
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
 	o.JUMP_SPEED = 300
 	o.RUN_SPEED = 200
+
+	o.spriteFrames = {love.graphics.newImage("Spy Game Sprites/Standing.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Straight Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Mid-Running Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Straight Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Mid-Running Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Jumping.png")}
+	o.spriteFra = 2
+	o.sprite = o.spriteFrames[1]
+	o.time = 0
+
 	o.RUN_ACCELERATION = 900
 	o.AIR_ACCELERATION = 300
 
 	o.terminalTouch = nil
 
 	o.isKill = false
+  
 	return o
 end
 
@@ -43,6 +58,8 @@ function Spy:update(dt)
 	self:collide()
 	self:changeState(dt)
 	self:runState(dt)
+	self:face()
+	self:updateSprite(dt)
 	self:terminal()
 
 	self.collider:moveTo(self.position.x, self.position.y)
@@ -71,6 +88,32 @@ function Spy:terminal()
 	self.terminalTouch = nil
 end
 
+function Spy:updateSprite(dt)
+	self.time = self.time + dt
+	if self.state == "air" then
+		self.sprite = self.spriteFrames[8]
+		self.spriteFra = 2
+		self.time = 0
+	elseif self.velocity.x == 0 then
+		self.sprite = self.spriteFrames[1]
+		self.spriteFra = 2
+		self.time = 0
+	elseif self.state == "air" then
+		self.sprite = self.spriteFrames[8]
+		self.spriteFra = 2
+		self.time = 0
+	else
+		self.sprite = self.spriteFrames[self.spriteFra]
+		if self.time >= (40 / self.RUN_SPEED) then
+			self.spriteFra = self.spriteFra + 1
+			self.time = self.time - (40 / self.RUN_SPEED)
+		end
+		if self.spriteFra > 7 then
+			self.spriteFra = 2
+		end
+	end
+end
+
 function Spy:collide()
 	hitWall = false
 
@@ -91,6 +134,7 @@ function Spy:collide()
 						self.position.x = self.position.x + math.abs(delta.x)
 					end
 				end
+        
 			else
 				if math.abs(self.position.x - otherParent.position.x) < (self.size.x + otherParent.size.x) / 2 - 2 then
 					if self.position.y < otherParent.position.y then
@@ -233,13 +277,28 @@ function Spy:runAir(dt)
 	self.position = self.position + (self.velocity * dt)
 end
 
-function Spy:draw()
-	love.graphics.setColor(255, 255, 255)
-	love.graphics.rectangle("fill", self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
-	love.graphics.setColor(255, 0, 0)
-	love.graphics.points(self.position.x + (self.size.x / 2) + 7, self.position.y + (self.size.y / 2) - 2)
+function Spy:face() -- Determines which way spy is facing
+	if self.velocity.x > 0 then
+		self.facing = "right"
+	elseif self.velocity.x < 0 then
+		self.facing = "left"
+	end
 end
 
+function Spy:draw()
+	love.graphics.setColor(255, 255, 255)
+
+	local x = (self.position.x - self.size.x / 2) -- x coord
+	local y = (self.position.y - self.size.y / 2) -- y coord
+
+	if self.facing == "right" then
+  	love.graphics.draw(self.sprite, x, y, 0, 2, 2) -- Places the sprite.
+	elseif self.facing == "left" then
+		x = x + self.size.x
+	  love.graphics.draw(self.sprite, x, y, 0, -2, 2) -- Places the sprite.
+	end
+end
+  
 function Spy:delete()
   HC.remove(self.collider)
 end
