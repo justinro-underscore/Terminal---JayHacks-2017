@@ -70,6 +70,9 @@ function Level01:updateState(dt)
 end
 
 function Level01:drawState()
+  camera:adjust()
+  camera:set()
+
   for _, v in ipairs(drawableLists) do
     for __, vv in ipairs(v) do
       if not vv.isKill then
@@ -77,6 +80,9 @@ function Level01:drawState()
       end
     end
   end
+
+  camera:reset()
+  hackerList[1]:draw()
 end
 
 function Level01:clearState()
