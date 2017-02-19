@@ -117,7 +117,7 @@ function HackerCommands:toggle(object)
     end
     self.output = self.output .. "'" .. self.currentTerminal.influence[numLength].name .. "'}"
     table.insert(self.display, self.output)
-  else
+  elseif self.currentTerminal then
     for i, v in ipairs(self.currentTerminal.influence) do
       if object == v.name then
         self.output = "Successfully toggled '" .. v.name .. "'"
