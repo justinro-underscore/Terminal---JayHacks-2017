@@ -22,6 +22,7 @@ require 'WinObject'
 
 objectFont = love.graphics.setNewFont("cour.ttf", 7)
 hackerFont = love.graphics.setNewFont("cour.ttf", 13)
+tutorialFont = love.graphics.setNewFont("cour.ttf", 20)
 
 menuSong = love.audio.newSource("Sound/Game Menu Track.wav") -- import music
 gameSong = love.audio.newSource("Sound/Gameplay Track.wav")
@@ -47,7 +48,7 @@ function love.load()
   winObjectList = {}
 
   updateableLists = {gamepadList, turretList, bulletList, hackerList, spyList}
-  drawableLists = {terminalList, winObjectList, bulletList, turretList, spyList, doorList, trapList, wallList, vboxList}
+  drawableLists = {winObjectList, bulletList, turretList, wallList, doorList, trapList, vboxList, terminalList, spyList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))
