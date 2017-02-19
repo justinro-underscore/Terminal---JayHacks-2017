@@ -6,6 +6,7 @@ require 'GameStates/SplashScreen'
 require 'GameStates/TitleMenu'
 require 'GameStates/Level01'
 require 'GameStates/Level02'
+require 'GameStates/finalLevel'
 
 require 'Gamepad'
 require 'Hacker'
@@ -30,7 +31,7 @@ deathSound = love.audio.newSource("Sound/Death Noise.wav")
 winSound = love.audio.newSource("Sound/Victory Screen.wav")
 
 function love.load()
-  love.window.setTitle("I wish that I had Jesse\'s Girl")
+  love.window.setTitle("Terminal")
 	love.window.setFullscreen(false)
   love.graphics.setDefaultFilter("nearest", "nearest")
 

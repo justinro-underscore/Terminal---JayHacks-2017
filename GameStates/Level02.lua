@@ -125,7 +125,6 @@ function Level02:updateState(dt)
       love.audio.stop()
       love.audio.play(deathSound)
     end
-    print("logging")
     self.time = self.time + dt
     if self.time > 3 then
       self:clearState()

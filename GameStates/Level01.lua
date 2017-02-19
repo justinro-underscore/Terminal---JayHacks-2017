@@ -16,13 +16,20 @@ function Level01:loadState()
   textList = {}
   coordList = {}
 
-	table.insert(spyList, Spy:new(200, 300, gamepadList[1]))
+	table.insert(spyList, Spy:new(175, 100, gamepadList[1]))
   table.insert(hackerList, Hacker:new())
 
+  for i=16, 208, 32 do
+    table.insert(wallList, Wall:new(100, i))
+    table.insert(wallList, Wall:new(292, i))
+  end
   for i=208, 400, 32 do
     table.insert(wallList, Wall:new(100, i))
   end
-  for i=100, 2800, 32 do
+  for i=100, 292, 32 do
+    table.insert(wallList, Wall:new(i, 400))
+  end
+  for i=292, 2800, 32 do
     table.insert(wallList, Wall:new(i, 400))
     table.insert(wallList, Wall:new(i, 208))
   end

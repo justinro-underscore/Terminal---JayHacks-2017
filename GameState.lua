@@ -8,7 +8,8 @@ function GameState:new()
   o.titleMenu = TitleMenu:new()
 	o.level01 = Level01:new()
   o.level02 = Level02:new()
-	o.currentState = o.level02
+  o.finalLevel = FinalLevel:new()
+	o.currentState = o.splashScreen
 	o.currentState:loadState()
 
   return o
@@ -31,6 +32,13 @@ function GameState:changeState(state) -- Handle state changes
     if self.currentState.isComplete then
       self.currentState:clearState()
       self.currentState = self.level02
+      self.currentState:loadState()
+    end
+
+  elseif self.currentState == self.level02 then
+    if self.currentState.isComplete then
+      self.currentState:clearState()
+      self.currentState = self.finalLevel
       self.currentState:loadState()
     end
 	end

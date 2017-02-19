@@ -3,6 +3,7 @@ SplashScreen = {}
 function SplashScreen:new()
   local o = {}
   setmetatable(o, {__index = self})
+  o.image = love.graphics.newImage("Spy Game Sprites/Banner.png")
   o.isComplete = false
   o.fade = 255
   o.fadedIn = false
@@ -33,10 +34,8 @@ function SplashScreen:keyInput(key)
 end
 
 function SplashScreen:drawState()
-	love.graphics.setColor(255, 255, 255)
-  love.graphics.rectangle("fill", 50, 50, 200, 35)
-	love.graphics.setColor(60, 60, 60)
-  love.graphics.print("THIS IS A SPLASH SCREEN", 100, 100)
+  love.graphics.setColor(255,255,255)
+	love.graphics.draw(self.image, 0, 0)
 
   love.graphics.setColor(0, 0, 0, self.fade)
   love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
