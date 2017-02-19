@@ -16,6 +16,7 @@ require 'VBox'
 require 'Trap'
 --require 'Door'
 
+objectFont = love.graphics.setNewFont("cour.ttf", 7)
 hackerFont = love.graphics.setNewFont("cour.ttf", 13)
 
 function love.load()
@@ -34,7 +35,7 @@ function love.load()
 
   updateableLists = {gamepadList, hackerList, spyList}
 
-  drawableLists = {hackerList, terminalList, vboxList, spyList, wallList, trapList}
+  drawableLists = {vboxList, spyList, wallList, trapList, hackerList, terminalList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))
