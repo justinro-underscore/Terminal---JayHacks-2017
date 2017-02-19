@@ -27,10 +27,19 @@ function Spy:new(x, y, controller)
 
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
 	o.JUMP_SPEED = 300
-	o.RUN_SPEED = 100
+	o.RUN_SPEED = 200
 
-	o.sprite = love.graphics.newImage("Spy Game Sprites/Standing man.png")
-  o.sprite:setFilter("nearest", "nearest")
+	o.spriteFrames = {love.graphics.newImage("Spy Game Sprites/Standing.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Straight Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Mid-Running Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Straight Right.png"),
+										love.graphics.newImage("Spy Game Sprites/Mid-Running Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Running Left.png"),
+										love.graphics.newImage("Spy Game Sprites/Jumping.png")}
+	o.spriteFra = 2
+	o.sprite = o.spriteFrames[1]
+	o.time = 0
 
 	return o
 end
@@ -40,8 +49,35 @@ function Spy:update(dt)
 	self:changeState(dt)
 	self:runState(dt)
 	self:face()
+	self:updateSprite(dt)
 
 	self.collider:moveTo(self.position.x, self.position.y)
+end
+
+function Spy:updateSprite(dt)
+	self.time = self.time + dt
+	if self.state == "air" then
+		self.sprite = self.spriteFrames[8]
+		self.spriteFra = 2
+		self.time = 0
+	elseif self.velocity.x == 0 then
+		self.sprite = self.spriteFrames[1]
+		self.spriteFra = 2
+		self.time = 0
+	elseif self.state == "air" then
+		self.sprite = self.spriteFrames[8]
+		self.spriteFra = 2
+		self.time = 0
+	else
+		self.sprite = self.spriteFrames[self.spriteFra]
+		if self.time >= (40 / self.RUN_SPEED) then
+			self.spriteFra = self.spriteFra + 1
+			self.time = self.time - (40 / self.RUN_SPEED)
+		end
+		if self.spriteFra > 7 then
+			self.spriteFra = 2
+		end
+	end
 end
 
 function Spy:collide()
@@ -137,16 +173,13 @@ end
 function Spy:draw()
 	love.graphics.setColor(255, 255, 255)
 
-	local x = (self.position.x - self.size.x / 2) / 2 -- x coord
-	local y = (self.position.y - self.size.y / 2) / 2 -- y coord
+	local x = (self.position.x - self.size.x / 2) -- x coord
+	local y = (self.position.y - self.size.y / 2) -- y coord
 
-  love.graphics.push()
 	if self.facing == "right" then
-  	love.graphics.scale(2, 2)
+  	love.graphics.draw(self.sprite, x, y, 0, 2, 2) -- Places the sprite.
 	elseif self.facing == "left" then
-  	love.graphics.scale(-2, 2) -- flips the image horizontally
-		x = (x * -1) - (self.size.x / 2)
+		x = x + self.size.x
+	  love.graphics.draw(self.sprite, x, y, 0, -2, 2) -- Places the sprite.
 	end
-  love.graphics.draw(self.sprite , x, y) -- Places the sprite.
-  love.graphics.pop()
 end

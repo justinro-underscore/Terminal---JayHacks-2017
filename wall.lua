@@ -11,7 +11,7 @@ function Wall:new(x, y) -- creates a new wall class and places it in an intial p
 	o.collider.parent = o -- used so that colliders can find their parent object
 	o.tag = "Wall"
 
-  o.sprite = love.graphics.newImage("Spy Game Sprites/Basic Jump Block.png")
+  o.sprite = love.graphics.newImage("Spy Game Sprites/Block 1x1.png")
   o.sprite:setFilter("nearest", "nearest") -- really important line here; sets the filter used for scalaing to nearest instead of linear, which prevents blur
 
   return o
