@@ -7,11 +7,20 @@ function Level01:new()
 end
 
 function Level01:loadState()
-	table.insert(spyList, Spy:new(200, 200, gamepadList[1])) -- new spy with the first gamepad
+	table.insert(spyList, Spy:new(200, 50, gamepadList[1])) -- new spy with the first gamepad
+  table.insert(hackerList, Hacker:new())
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
-		table.insert(wallList, Wall:new(i, 500))
+		table.insert(wallList, Wall:new(i, 250))
 	end
+end
+
+function Level01:keyInput(key)
+  hackerList[1]:keyInput(key)
+end
+
+function Level01:input(text)
+  hackerList[1]:input(text)
 end
 
 function Level01:updateState(dt)
