@@ -20,6 +20,8 @@ function Level01:loadState()
   terminalList[2]:addInfluence(vboxList[1])
   terminalList[2]:addInfluence(vboxList[2])
   table.insert(doorList, Door:new(500, 202))
+  table.insert(turretList, Turret:new(200, 100, "left"))
+  table.insert(turretList, Turret:new(150, 150, "right"))
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 500))
