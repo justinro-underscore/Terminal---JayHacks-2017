@@ -42,4 +42,11 @@ function Terminal:draw()
 	  love.graphics.setColor(53, 64, 124)
   end
   love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
+
+  if hackerList[1] and hackerList[1].currentTerminal == self then
+    love.graphics.setColor(54, 204, 54, 120)
+    for _, v in ipairs(self.influence) do
+      love.graphics.line(self.position.x, self.position.y, v.position.x, v.position.y)
+    end
+  end
 end
