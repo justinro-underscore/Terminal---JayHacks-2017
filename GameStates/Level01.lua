@@ -88,4 +88,12 @@ function Level01:clearState()
   for k in pairs(trapList) do
     trapList[k] = nil
   end
+
+  for k in pairs(turretList) do
+    turretList[k] = nil
+  end
+
+  for k in pairs(bulletList) do
+    bulletList[k] = nil
+  end
 end

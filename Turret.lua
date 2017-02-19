@@ -25,9 +25,9 @@ function Turret:update(dt)
       self.time = self.time - 1
     end
     if self.facing == "right" then
-      table.insert(bulletList,Bullet:new(self.position.x + self.size.x / 2, self.position.y, self.facing))
+      table.insert(bulletList,Bullet:new(self.position.x + self.size.x / 2, self.position.y, 300, 0))
     else
-      table.insert(bulletList,Bullet:new(self.position.x - self.size.x / 2, self.position.y, self.facing))
+      table.insert(bulletList,Bullet:new(self.position.x - self.size.x / 2, self.position.y, -300, 0))
     end
     self.count = self.count + 1
     self.time = self.time - 0.5
