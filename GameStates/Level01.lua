@@ -41,7 +41,6 @@ end
 
 function Level01:checkWin()
   if spyList[1]:winCheck() then
-    print("logging")
     self.isComplete = true
   end
 end

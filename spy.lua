@@ -97,7 +97,6 @@ function Spy:winCheck()
   dy = math.abs(winObjectList[1].position.y - self.position.y)
   if (dx <= (winObjectList[1].size.x / 2 + self.size.x / 2)) and (dy <= (winObjectList[1].size.y / 2 + self.size.y / 2)) then
 		if self.controller.bEdge then
-			print("Chec")
 			return true
 		end
   end
