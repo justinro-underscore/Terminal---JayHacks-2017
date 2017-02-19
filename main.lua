@@ -13,9 +13,9 @@ require 'Wall'
 require 'Trap'
 require 'dirt'
 --require 'Door'
-
+runningSpy = love.graphics.newImage("")
 hackerFont = love.graphics.setNewFont("cour.ttf", 20)
-dirt = love.graphics.newImage("Light Skin Dirt Bitches.png")
+dirtImage = love.graphics.newImage("Light Skin Dirt Bitches.png")
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
@@ -26,11 +26,11 @@ function love.load()
   local dirt = {}
   local j=1
 	for i = 1, numdirt do
-		table.insert(dirt, dirt:new(j,i))
+		table.insert(Dirt, Dirt:new(j,i))
     j=j+1
 	end
 
-	for i, v in ipairs(dirt) do
+	for i, v in ipairs(Dirt) do
 		v:draw()
 	end
     love.graphics.setCanvas()

@@ -1,12 +1,12 @@
-dirt=  {}
+Dirt=  {}
 
-function dirt:new(x,y)
+function Dirt:new(x,y)
   o={}
   setmetatable(o,{__index = self})
-  o.position = vector.newCanvas(x,y)
+  o.position = vector.new(x,y)
   return o
 end
 
-function dirt:draw()
-  love.graphics.draw(dirt,self.position.x, self.position.y)
+function Dirt:draw()
+  love.graphics.draw(dirtImage,self.position.x, self.position.y)
 end
