@@ -7,6 +7,7 @@ function VBox:new(x,y,activated,name)
   o.position = vector.new(x, y) -- places the position vector
   o.size = vector.new(64, 64)
   o.name = name
+  o.sprite = love.graphics.newImage("Spy Game Sprites/Steel Wall.png")
 
   o.activated = activated
 
@@ -40,7 +41,7 @@ function VBox:draw()
   if self.activated then
     love.graphics.setColor(125, 125, 125)
   else
-    love.graphics.setColor(125, 125, 125, 125)
+    love.graphics.setColor(125, 125, 125, 100)
   end
-  love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
+  love.graphics.draw(self.sprite , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
 end

@@ -10,6 +10,8 @@ function Terminal:new(x, y, name, unlocked, password)
   o.terminalPassword = password
   o.unlocked = unlocked
 
+  o.sprite = love.graphics.newImage("Spy Game Sprites/Terminal Console Command.png")
+
   o.accessible = false
 
 	o.collider = HC.rectangle(x, y, o.size.x, o.size.y)
@@ -36,12 +38,7 @@ function Terminal:unlock()
 end
 
 function Terminal:draw()
-  if self.unlocked then
-    love.graphics.setColor(0, 0, 255)
-  else
-	  love.graphics.setColor(53, 64, 124)
-  end
-  love.graphics.rectangle("fill" , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y) -- Places the rectangle.
+  love.graphics.draw(self.sprite , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
 
   if hackerList[1] and hackerList[1].currentTerminal and hackerList[1].currentTerminal == self then
     love.graphics.setFont(hackerFont)

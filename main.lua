@@ -22,6 +22,7 @@ hackerFont = love.graphics.setNewFont("cour.ttf", 13)
 function love.load()
   love.window.setTitle("I wish that I had Jesse\'s Girl")
 	love.window.setFullscreen(false)
+  love.graphics.setDefaultFilter("nearest", "nearest")
 
   --sets up global reference for all objects
 
@@ -35,7 +36,7 @@ function love.load()
   trapList = {}
 
   updateableLists = {gamepadList, hackerList, spyList}
-  drawableLists = {vboxList, terminalList, spyList, wallList, trapList, doorList, hackerList}
+  drawableLists = {terminalList, spyList, doorList, trapList, wallList, vboxList, hackerList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))
