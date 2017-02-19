@@ -20,6 +20,7 @@ function Spy:new(x, y, controller)
 	o.mode = "none"
 
 	o.hitGround = false -- will be set to true by the collision function, used by changestate
+	o.hitWall = false
 
 	o.collider = HC.rectangle(x, y, o.size.x, o.size.y)
 	o.collider.parent = o -- used so that colliders can find their parent object
@@ -28,7 +29,9 @@ function Spy:new(x, y, controller)
 
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
 	o.JUMP_SPEED = 300
-	o.RUN_SPEED = 100
+	o.RUN_SPEED = 200
+	o.RUN_ACCELERATION = 900
+	o.AIR_ACCELERATION = 300
 
 	o.terminalTouch = nil
 
@@ -64,29 +67,36 @@ function Spy:terminal()
 end
 
 function Spy:collide()
+	hitWall = false
+
 	for other, delta in pairs(HC.collisions(self.collider)) do
 		local otherParent = other.parent
 
-		if otherParent.tag == "Wall" and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
+		if (otherParent.tag == "Wall" or otherParent.tag == "VBoxOn") and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
 
 			if math.abs(delta.x) > 0 then
-				if self.position.x < otherParent.position.x then
-					self.velocity.x = 0
-					self.position.x = self.position.x - math.abs(delta.x)
-				else
-					self.velocity.x = 0
-					self.position.x = self.position.x + math.abs(delta.x)
-				end
+				if not hitWall then
+					hitWall = true
 
-			else
-				if self.position.y < otherParent.position.y then
-					if not self.hitGround then
-						self.hitGround = true
-						self.position.y = self.position.y - math.abs(delta.y)
+					if self.position.x < otherParent.position.x then
+						self.velocity.x = 0
+						self.position.x = self.position.x - math.abs(delta.x)
+					else
+						self.velocity.x = 0
+						self.position.x = self.position.x + math.abs(delta.x)
 					end
-				else
-					self.velocity.y = 0
-					self.position.y = self.position.y + math.abs(delta.y)
+				end
+			else
+				if math.abs(self.position.x - otherParent.position.x) < (self.size.x + otherParent.size.x) / 2 - 2 then
+					if self.position.y < otherParent.position.y then
+						if not self.hitGround then
+							self.hitGround = true
+							self.position.y = self.position.y - math.abs(delta.y)
+						end
+					else
+						self.velocity.y = 0
+						self.position.y = self.position.y + math.abs(delta.y)
+					end
 				end
 			end
 
@@ -99,6 +109,25 @@ function Spy:checkGround() -- returns true true if the spy is above a block; use
 		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) then
 			return true
 		end
+	end
+	for i, v in ipairs(vboxList) do
+		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) and (v.tag == "VBoxOn") then
+			return true
+		end
+	end
+	return false
+end
+
+function Spy:checkWallJump()
+	if self.controller.aEdge then
+		for i, v in ipairs(wallList) do
+			if v.collider:contains(self.position.x + (self.size.x / 2) + 15, self.position.y + (self.size.y / 2) - 2) then
+				return true, "left"
+			elseif self.velocity.x <= 0 and v.collider:contains(self.position.x - (self.size.x / 2) - 15, self.position.y + (self.size.y / 2) - 2) then
+				return true, "right"
+			end
+		end
+
 	end
 	return false
 end
@@ -130,26 +159,60 @@ function Spy:runState(dt)
 end
 
 function Spy:runRun(dt)
-	self.velocity.x, self.velocity.y = 0, 0
 	if self.controller.joy1.x > 0 then
-		self.velocity = self.velocity + vector.new(self.RUN_SPEED, 0)
+		self.velocity = self.velocity + (vector.new(self.RUN_ACCELERATION, 0) * dt)
 	elseif self.controller.joy1.x < 0 then
-		self.velocity = self.velocity + vector.new(-self.RUN_SPEED, 0)
+		self.velocity = self.velocity + (vector.new(-self.RUN_ACCELERATION, 0) * dt)
+	else
+
+		if self.velocity.x > self.RUN_ACCELERATION/10 then
+			self.velocity = self.velocity - (vector.new(self.RUN_ACCELERATION, 0) * dt)
+		elseif self.velocity.x < -self.RUN_ACCELERATION/10 then
+			self.velocity = self.velocity + (vector.new(self.RUN_ACCELERATION, 0) * dt)
+		else
+			self.velocity.x = 0
+		end
+
+	end
+
+	if math.abs(self.velocity.x) > self.RUN_SPEED then -- cap speed
+		if self.velocity.x > 0 then
+			self.velocity.x = self.RUN_SPEED
+		else
+			self.velocity.x = -self.RUN_SPEED
+		end
 	end
 
 	self.position = self.position + (self.velocity * dt)
 end
 
 function Spy:runAir(dt)
-	local acceleration = vector.new(0, self.GRAVITY_CONSTANT)
+	local acceleration = vector.new(0, self.GRAVITY_CONSTANT) -- fall due to gravity
 	self.velocity = self.velocity + (acceleration * dt)
 
-	if self.controller.joy1.x > 0 then
-		self.velocity.x = self.RUN_SPEED
+	if self.controller.joy1.x > 0 then -- arial movement due to joystick input
+		self.velocity = self.velocity + (vector.new(self.AIR_ACCELERATION, 0) * dt)
 	elseif self.controller.joy1.x < 0 then
-		self.velocity.x = -self.RUN_SPEED
-	else
-		self.velocity.x = 0
+		self.velocity = self.velocity + (vector.new(-self.AIR_ACCELERATION, 0) * dt)
+	end
+
+	local isJump, direction = self:checkWallJump()
+	if isJump then
+		if direction == "left" then
+			self.velocity.x = -self.RUN_SPEED
+			self.velocity.y = -self.JUMP_SPEED
+		elseif direction == "right" then
+			self.velocity.x = self.RUN_SPEED
+			self.velocity.y = -self.JUMP_SPEED
+		end
+	end
+
+	if math.abs(self.velocity.x) > self.RUN_SPEED then -- cap speed
+		if self.velocity.x > 0 then
+			self.velocity.x = self.RUN_SPEED
+		else
+			self.velocity.x = -self.RUN_SPEED
+		end
 	end
 
 	self.position = self.position + (self.velocity * dt)
@@ -158,4 +221,6 @@ end
 function Spy:draw()
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.rectangle("fill", self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
+	love.graphics.setColor(255, 0, 0)
+	love.graphics.points(self.position.x + (self.size.x / 2) + 7, self.position.y + (self.size.y / 2) - 2)
 end
