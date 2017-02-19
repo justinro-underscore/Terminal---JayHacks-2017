@@ -1,12 +1,12 @@
 Bullet = {}
 
-function Bullet:new(x,y)
+function Bullet:new(x,y,facing)
   o = {}
   setmetatable(o, {__index = self})
 
   o.position = vector.new(x,y)
   o.size = vector.new(16, 16)
-  o.facing = "right"
+  o.facing = facing
 
   o.VELOCITY_CONSTANT = 200
 
