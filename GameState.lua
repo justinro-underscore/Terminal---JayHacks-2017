@@ -6,10 +6,10 @@ function GameState:new()
 
   o.splashScreen = SplashScreen:new()
   o.titleMenu = TitleMenu:new()
-	o.level01 = Level01:new()
-	o.currentState = o.level01
+	o.level02 = Level02:new()
+	o.currentState = o.level02
 	o.currentState:loadState()
-	o.stateName = "level01"
+	o.stateName = "level02"
 
   return o
 end

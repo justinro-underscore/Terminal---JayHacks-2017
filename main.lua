@@ -5,7 +5,7 @@ require 'GameState'
 require 'GameStates/SplashScreen'
 require 'GameStates/TitleMenu'
 require 'GameStates/Level01'
-
+require 'GameStates/Level02'
 require 'Gamepad'
 require 'Hacker'
 require 'HackerCommands'
