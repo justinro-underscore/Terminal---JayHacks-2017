@@ -28,7 +28,7 @@ function Spy:new(x, y, controller)
 
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
 	o.JUMP_SPEED = 300
-	o.RUN_SPEED = 100
+	o.RUN_SPEED = 200
 
 	return o
 end

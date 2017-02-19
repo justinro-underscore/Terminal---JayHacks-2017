@@ -12,6 +12,7 @@ function Level01:loadState()
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 500))
 	end
+  table.insert(wallList, Wall:new(300, 350))
 end
 
 function Level01:updateState(dt)
