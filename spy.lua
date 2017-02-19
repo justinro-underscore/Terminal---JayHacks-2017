@@ -360,6 +360,5 @@ function Spy:draw()
 end
 
 function Spy:delete()
-	debug.debug()
   HC.remove(self.collider)
 end

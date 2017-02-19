@@ -8,7 +8,7 @@ function GameState:new()
   o.titleMenu = TitleMenu:new()
 	o.level01 = Level01:new()
   o.level02 = Level02:new()
-	o.currentState = o.level01
+	o.currentState = o.level02
 	o.currentState:loadState()
 
   return o
