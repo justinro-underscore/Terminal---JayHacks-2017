@@ -6,6 +6,7 @@ require 'GameStates/SplashScreen'
 require 'GameStates/TitleMenu'
 require 'GameStates/Level01'
 require 'GameStates/Level02'
+
 require 'Gamepad'
 require 'Hacker'
 require 'HackerCommands'
@@ -17,6 +18,7 @@ require 'VBox'
 require 'Door'
 require 'Bullet'
 require 'Turret'
+require 'WinObject'
 
 objectFont = love.graphics.setNewFont("cour.ttf", 7)
 hackerFont = love.graphics.setNewFont("cour.ttf", 13)
@@ -37,9 +39,10 @@ function love.load()
   trapList = {}
   bulletList = {}
   turretList = {}
+  winObjectList = {}
 
   updateableLists = {gamepadList, turretList, bulletList, hackerList, spyList}
-  drawableLists = {hackerList, terminalList, bulletList, vboxList, doorList, turretList, spyList, wallList, trapList}
+  drawableLists = {terminalList, winObjectList, bulletList, turretList, spyList, doorList, trapList, wallList, vboxList}
 
   local joysticks = love.joystick.getJoysticks()
 	table.insert(gamepadList, Gamepad:new(joysticks[1]))
@@ -48,6 +51,28 @@ function love.load()
   state = GameState:new()
 
   love.keyboard.setKeyRepeat(true)
+
+end
+
+camera = {}
+camera.x = 0
+camera.y = 0
+camera.scale = 1
+
+function camera:adjust()
+  self.x = spyList[1].position.x
+  self.y = spyList[1].position.y
+end
+
+function camera:set()
+  love.graphics.push()
+  love.graphics.scale(1 / self.scale, 1 / self.scale)
+  local winX, winY = love.window.getMode()
+  love.graphics.translate(-(self.x - (winX * .5 * self.scale)), -(self.y - (winY * .33 * self.scale)))
+end
+
+function camera:reset()
+  love.graphics.pop()
 end
 
 function love.update(dt)

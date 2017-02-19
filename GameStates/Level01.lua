@@ -3,6 +3,7 @@ Level01 = {}
 function Level01:new()
   local o = {}
   setmetatable(o, {__index = self})
+  o.isComplete = false
   return o
 end
 
@@ -22,8 +23,9 @@ function Level01:loadState()
   table.insert(doorList, Door:new(300, 202,"door_1"))
   terminalList[2]:addInfluence(doorList[1])
 
-  table.insert(turretList, Turret:new(200, 100, "left"))
-  table.insert(turretList, Turret:new(150, 150, "right"))
+  table.insert(winObjectList, WinObject:new(250, 230))
+  --table.insert(turretList, Turret:new(200, 100, "left"))
+  --table.insert(turretList, Turret:new(150, 150, "right"))
 
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 300))
@@ -37,6 +39,12 @@ function Level01:loadState()
 
 end
 
+function Level01:checkWin()
+  if spyList[1]:winCheck() then
+    self.isComplete = true
+  end
+end
+
 function Level01:keyInput(key)
   hackerList[1]:keyInput(key)
 end
@@ -46,6 +54,7 @@ function Level01:input(text)
 end
 
 function Level01:updateState(dt)
+  self:checkWin()
 	for _, v in ipairs(updateableLists) do
     for __, vv in ipairs(v) do
       if not vv.isKill then
@@ -61,6 +70,9 @@ function Level01:updateState(dt)
 end
 
 function Level01:drawState()
+  camera:adjust()
+  camera:set()
+
   for _, v in ipairs(drawableLists) do
     for __, vv in ipairs(v) do
       if not vv.isKill then
@@ -68,6 +80,9 @@ function Level01:drawState()
       end
     end
   end
+
+  camera:reset()
+  hackerList[1]:draw()
 end
 
 function Level01:clearState()
@@ -97,5 +112,13 @@ function Level01:clearState()
 
   for k in pairs(bulletList) do
     bulletList[k] = nil
+  end
+
+  for k in pairs(terminalList) do
+    terminalList[k] = nil
+  end
+
+  for k in pairs(doorList) do
+    doorList[k] = nil
   end
 end

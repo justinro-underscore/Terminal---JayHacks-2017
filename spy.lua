@@ -31,6 +31,7 @@ function Spy:new(x, y, controller)
 	o.GRAVITY_CONSTANT = 500 -- constant that determines fall speed
 	o.JUMP_SPEED = 300
 	o.RUN_SPEED = 200
+	o.DEFENSE_SPEED = 100
 
 	o.spriteFrames = {love.graphics.newImage("Spy Game Sprites/Standing.png"),
 										love.graphics.newImage("Spy Game Sprites/Running Straight Left.png"),
@@ -50,7 +51,7 @@ function Spy:new(x, y, controller)
 	o.terminalTouch = nil
 
 	o.isKill = false
-  
+
 	return o
 end
 
@@ -61,6 +62,7 @@ function Spy:update(dt)
 	self:face()
 	self:updateSprite(dt)
 	self:terminal()
+	self:winCheck()
 
 	self.collider:moveTo(self.position.x, self.position.y)
 
@@ -86,6 +88,19 @@ function Spy:terminal()
 		end
 	end
 	self.terminalTouch = nil
+end
+
+function Spy:winCheck()
+  local dx = 0
+  local dy = 0
+  dx = math.abs(winObjectList[1].position.x - self.position.x)
+  dy = math.abs(winObjectList[1].position.y - self.position.y)
+  if (dx <= (winObjectList[1].size.x / 2 + self.size.x / 2)) and (dy <= (winObjectList[1].size.y / 2 + self.size.y / 2)) then
+		if self.controller.bEdge then
+			return true
+		end
+  end
+	return false
 end
 
 function Spy:updateSprite(dt)
@@ -134,7 +149,7 @@ function Spy:collide()
 						self.position.x = self.position.x + math.abs(delta.x)
 					end
 				end
-        
+
 			else
 				if math.abs(self.position.x - otherParent.position.x) < (self.size.x + otherParent.size.x) / 2 - 2 then
 					if self.position.y < otherParent.position.y then
@@ -193,7 +208,7 @@ end
 
 function Spy:changeState(dt)
 	if self.state == "run" then
-		if self.controller.aEdge then
+		if self.controller.aEdge and not (self.mode == "defense") then -- can't jump in defense mode
 			self.state = "air"
 			self.velocity = self.velocity + vector.new(0, -self.JUMP_SPEED)
 		elseif not self:checkGround() then
@@ -234,11 +249,18 @@ function Spy:runRun(dt)
 
 	end
 
-	if math.abs(self.velocity.x) > self.RUN_SPEED then -- cap speed
+	local speedCap
+	if self.mode == defense then
+		speedCap = self.DEFENSE_SPEED
+	else
+		speedCap = self.RUN_SPEED
+	end
+
+	if math.abs(self.velocity.x) > speedCap then -- cap speed
 		if self.velocity.x > 0 then
-			self.velocity.x = self.RUN_SPEED
+			self.velocity.x = speedCap
 		else
-			self.velocity.x = -self.RUN_SPEED
+			self.velocity.x = -speedCap
 		end
 	end
 
@@ -256,7 +278,7 @@ function Spy:runAir(dt)
 	end
 
 	local isJump, direction = self:checkWallJump()
-	if isJump then
+	if isJump and self.mode == "acrobatic" then -- we can only jump in acrobatic mode
 		if direction == "left" then
 			self.velocity.x = -self.RUN_SPEED
 			self.velocity.y = -self.JUMP_SPEED
@@ -285,6 +307,10 @@ function Spy:face() -- Determines which way spy is facing
 	end
 end
 
+function Spy:setMode(mode)
+	self.mode = mode
+end
+
 function Spy:draw()
 	love.graphics.setColor(255, 255, 255)
 
@@ -298,7 +324,7 @@ function Spy:draw()
 	  love.graphics.draw(self.sprite, x, y, 0, -2, 2) -- Places the sprite.
 	end
 end
-  
+
 function Spy:delete()
   HC.remove(self.collider)
 end

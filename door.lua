@@ -34,6 +34,7 @@ function Door:toggle()
 end
 
 function Door:draw() --Will Brabston told us to draw the door
+  love.graphics.setColor(255, 255, 255, 255)
   if self.isOpen then
     love.graphics.draw(self.spriteOpen , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
   else
