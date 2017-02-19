@@ -13,6 +13,7 @@ function Level01:loadState()
   terminalList[1]:addInfo("Did you know that Alex is a poser?")
   table.insert(terminalList, Terminal:new(450, 202, "terminal_2", true, ""))
   terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
+  table.insert(doorList, Door:new(500, 202))
 
   table.insert(vboxList, VBox:new(600, 200, true))
   table.insert(vboxList, VBox:new(700, 200, false))

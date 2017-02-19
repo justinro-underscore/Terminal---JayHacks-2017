@@ -72,7 +72,7 @@ function Spy:collide()
 	for other, delta in pairs(HC.collisions(self.collider)) do
 		local otherParent = other.parent
 
-		if (otherParent.tag == "Wall" or otherParent.tag == "VBoxOn") and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
+		if (otherParent.tag == "Wall" or otherParent.tag == "VBoxOn" or otherParent.tag == "DoorClosed") and (math.abs(delta.x) > 0 or math.abs(delta.y) > 0) then
 
 			if math.abs(delta.x) > 0 then
 				if not hitWall then
