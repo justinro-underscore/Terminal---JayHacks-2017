@@ -38,13 +38,19 @@ function Level02:updateState(dt)
 end
 
 function Level02:drawState()
-  for _, v in ipairs(drawableLists) do
-    for __, vv in ipairs(v) do
-      if not vv.isKill then
-        vv:draw()
+    camera:adjust()
+    camera:set()
+
+    for _, v in ipairs(drawableLists) do
+      for __, vv in ipairs(v) do
+        if not vv.isKill then
+          vv:draw()
+        end
       end
     end
-  end
+
+    camera:reset()
+    hackerList[1]:draw()
 end
 
 function Level02:clearState()
