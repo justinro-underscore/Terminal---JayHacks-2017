@@ -13,6 +13,8 @@ function Hacker:new()
 
   o.commands = HackerCommands:new() -- Holds the hacker commands
   o.commands:setDisplay(o.display)
+  o.previousCommand = ""
+  o.secondInput = false
 
   o.spy = nil
 
@@ -74,6 +76,14 @@ function Hacker:runCommand(text)
     return nil
   end
 
+  if secondInput then
+    if previousCommand == "access" then
+      self.commands:password(text)
+      secondInput = false
+      return nil
+    end
+  end
+
   local index = string.find(prompt, " ") -- Finds the first space
   if not (index == nil) then
     command = string.sub(prompt, 1, index-1)
@@ -84,6 +94,11 @@ function Hacker:runCommand(text)
 
   if command == "change" or command == "mode" then
     self.commands:changeMode(object)
+  elseif command == "access" then
+    if self.commands:access(object) then
+      previousCommand = "access"
+      secondInput = true
+    end
   elseif command == "quit" then
     table.insert(self.display, "WHY WOULD YOU DO THIS")
     love.event.quit()
@@ -94,6 +109,11 @@ end
 
 -- Draw the stuff
 function Hacker:draw()
+  love.graphics.setColor(0, 0, 0)
+  love.graphics.rectangle("fill", 0, love.graphics.getHeight() / 3 * 2, love.graphics.getWidth(), love.graphics.getHeight() / 3)
+  love.graphics.setColor(0,255,0)
+  love.graphics.rectangle("fill", 0, love.graphics.getHeight() / 3 * 2, love.graphics.getWidth(), 1)
+
   love.graphics.setColor(0, 255, 0)
 	love.graphics.setFont(hackerFont)
   love.graphics.print("> " .. self.currentInput .. self.blink, 10, love.graphics.getHeight()-25) -- Prints the command line
@@ -107,7 +127,4 @@ function Hacker:draw()
     fade = fade - 32
     love.graphics.setColor(0,255,0,fade)
   end
-
-  love.graphics.setColor(0,255,0)
-  love.graphics.rectangle("fill", 0, love.graphics.getHeight() / 3 * 2, love.graphics.getWidth(), 1)
 end
