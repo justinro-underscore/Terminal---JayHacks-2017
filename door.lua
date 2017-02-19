@@ -9,8 +9,9 @@ function Door:new(x,y,name) --Creates the door
   o.name = name
   o.isOpen = false -- bool holds if the door is open or closed
 
-  o.sprite = love.graphics.newImage("Spy Game Sprites/More Basic Metal Door")
-  
+  o.spriteOpen = love.graphics.newImage("Spy Game Sprites/Basic Metal Door Open.png")
+  o.spriteClosed = love.graphics.newImage("Spy Game Sprites/Basic Metal Door.png")
+
   o.collider = HC.rectangle(o.position.x - o.size.x / 2, o.position.y - o.size.x / 2, o.size.x, o.size.y)
   o.collider.parent = o -- used so that colliders can find their parent object
   o.tag = "DoorClosed"
@@ -33,10 +34,9 @@ function Door:toggle()
 end
 
 function Door:draw() --Will Brabston told us to draw the door
-  if isOpen then
-    love.graphics.setColor(155, 155, 155, 155)
+  if self.isOpen then
+    love.graphics.draw(self.spriteOpen , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
   else
-    love.graphics.setColor(155, 155, 155)
-	end
-  love.graphics.rectangle("fill", self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
+    love.graphics.draw(self.spriteClosed , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
+  end
 end

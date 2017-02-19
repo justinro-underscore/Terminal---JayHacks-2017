@@ -18,11 +18,7 @@ function Wall:new(x, y) -- creates a new wall class and places it in an intial p
 end
 
 function Wall:draw()
-	love.graphics.setColor(255, 255, 255)
-  love.graphics.push()
-  love.graphics.scale(2, 2)
-  love.graphics.draw(self.sprite , (self.position.x - self.size.x / 2) / 2, (self.position.y - self.size.y / 2) / 2) -- Places the sprite.
-  love.graphics.pop()
-  love.graphics.setColor(255, 0, 0)
-	self.collider:draw()
+  love.graphics.draw(self.sprite , self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, 0, 2, 2) -- Places the sprite.
+  --love.graphics.setColor(255, 0, 0)
+	--self.collider:draw()
 end
