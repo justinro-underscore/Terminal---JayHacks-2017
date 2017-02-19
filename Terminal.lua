@@ -17,12 +17,17 @@ function Terminal:new(x, y, name, unlocked, password)
   o.tag = "Terminal" -- used for other objects to find out what kind of object this is
 
   o.information = {}
+  o.influence = {}
 
   return o
 end
 
 function Terminal:addInfo(info)
   table.insert(self.information, info)
+end
+
+function Terminal:addInfluence(object)
+  table.insert(self.influence, object)
 end
 
 function Terminal:unlock()

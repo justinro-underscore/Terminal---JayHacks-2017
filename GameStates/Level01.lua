@@ -9,13 +9,17 @@ end
 function Level01:loadState()
 	table.insert(spyList, Spy:new(200, 50, gamepadList[1])) -- new spy with the first gamepad
   table.insert(hackerList, Hacker:new())
-  table.insert(terminalList, Terminal:new(300, 202, "terminal_1", false, "poop"))
-  terminalList[1]:addInfo("Did you know that Alex is a poser?")
-  table.insert(terminalList, Terminal:new(450, 202, "terminal_2", true, ""))
-  terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
 
-  table.insert(vboxList, VBox:new(600, 200, true))
-  table.insert(vboxList, VBox:new(700, 200, false))
+  table.insert(vboxList, VBox:new(600, 200, true,"vbox_1"))
+  table.insert(vboxList, VBox:new(700, 200, false,"vbox_2"))
+
+  table.insert(terminalList, Terminal:new(300, 452, "terminal_1", false, "poop"))
+  terminalList[1]:addInfo("Did you know that Alex is a poser?")
+  table.insert(terminalList, Terminal:new(150, 452, "terminal_2", true, ""))
+  terminalList[2]:addInfo("Congrats, you unlocked an unlocked terminal. Woopdeedoo")
+  terminalList[2]:addInfluence(vboxList[1])
+  terminalList[2]:addInfluence(vboxList[2])
+
 	for i = 100, 500, 32 do -- make a bunch of walls at 32 px appart
 		table.insert(wallList, Wall:new(i, 500))
 	end
