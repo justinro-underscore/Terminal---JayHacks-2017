@@ -79,7 +79,7 @@ function Spy:checkGround() -- returns true true if the spy is above a block; use
 		end
 	end
 	for i, v in ipairs(vboxList) do
-		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) then
+		if v.collider:contains(self.position.x - self.size.x / 2, self.position.y + (self.size.y / 2) + 2) or v.collider:contains(self.position.x + self.size.x / 2, self.position.y + (self.size.y / 2) + 2) and (v.tag == "VBoxOn") then
 			return true
 		end
 	end
