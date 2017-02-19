@@ -35,6 +35,7 @@ function Spy:new(x, y, controller)
 
 	o.terminalTouch = nil
 
+	o.isKill = false
 	return o
 end
 
@@ -45,6 +46,10 @@ function Spy:update(dt)
 	self:terminal()
 
 	self.collider:moveTo(self.position.x, self.position.y)
+
+	if self.isKill then
+		self:delete()
+	end
 end
 
 function Spy:terminal()
@@ -100,6 +105,8 @@ function Spy:collide()
 				end
 			end
 
+		elseif otherParent.tag == "Trap" then
+			self.isKill = true
 		end
   end
 end
@@ -223,4 +230,8 @@ function Spy:draw()
 	love.graphics.rectangle("fill", self.position.x - self.size.x / 2, self.position.y - self.size.y / 2, self.size.x, self.size.y)
 	love.graphics.setColor(255, 0, 0)
 	love.graphics.points(self.position.x + (self.size.x / 2) + 7, self.position.y + (self.size.y / 2) - 2)
+end
+
+function Spy:delete()
+  HC.remove(self.collider)
 end
