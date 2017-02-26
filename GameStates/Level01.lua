@@ -362,4 +362,8 @@ function Level01:clearState()
     HC.remove(doorList[k].collider)
     doorList[k] = nil
   end
+
+  for k in pairs(winObjectList) do
+    winObjectList[k] = nil
+  end
 end
