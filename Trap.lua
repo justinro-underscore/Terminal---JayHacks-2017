@@ -10,3 +10,4 @@ end
 function Trap:draw()
   love.graphics.rectangle("fill", self.position.x, self.position.y, self.size.x, self.size.y)
 end
+--WTF.
